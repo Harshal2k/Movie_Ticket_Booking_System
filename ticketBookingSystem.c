@@ -9,7 +9,7 @@ struct Movie
 struct Screen
 {
     int screenNum;
-    char showID;
+    int showID;
     struct Movie *movie;
     int seats[15][15];
     char dateTime[20];
@@ -33,9 +33,11 @@ void user()
     switch (choice)
     {
     case 1:
-        
+        displayMovies();
         break;
-    
+    case 2:
+        bookTicket();
+        break;
     default:
         break;
     }
@@ -61,6 +63,7 @@ void displayMovies()
 
 void bookTicket()
 {
+
 }
 
 void cancelTicket()
