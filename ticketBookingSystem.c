@@ -22,7 +22,7 @@ struct Screen
     int year;
     char time;
     struct Screen *next;
-} *screen1, *screen2, *screen3;
+} *screen1=NULL, *screen2, *screen3;
 
 void showMovies(struct Movie **head)
 {
@@ -160,28 +160,35 @@ void bookedShows()
 {
 }
 
-void bookTicket()
+struct Screen  *bookTicket(struct Screen *screen1)
 {
 
+   struct Screen *temp=screen1;
     struct Screen *sc = (struct Screen *)malloc(sizeof(struct Screen));
+    struct Movie *mov=(struct Movie *)malloc(sizeof(struct Movie));
     int seatNo;
     char movieName[50];
     char userName[50];
     char mobileNo[10];
     displayMovies();
-    printf("\nWhich show would you like to watch");
-    fgets(sc->movie->name, 30, stdin);
-
+    printf("\nWhich show would you like to watch\n");
+    scanf(" ");
+    fgets(mov->name,50,stdin);
     printf("\nEnter your name\n");
-    fgets(userName, 30, stdin);
+    scanf(" ");
+    fgets(userName,50,stdin);
+     printf("\nEnter your screen number\n");
+    scanf("%d",&sc->screenNum);
 
     while (1)
     {
         printf("\nEnter your 10 digit mobile number\n");
-        fgets(mobileNo, 30, stdin);
+        scanf(" ");
+        fgets(mobileNo,10,stdin);
+
         int len = strlen(mobileNo);
 
-        if (len == 11)
+        if (len == 2)
         {
 
             break;
@@ -197,6 +204,8 @@ void bookTicket()
     {
         printf("\nEnter Seat No. : ");
         scanf("%d", &seatNo);
+        
+        
         if (sc->seats[seatNo] == 0)
         {
             sc->seats[seatNo] = 1;
@@ -207,10 +216,30 @@ void bookTicket()
             printf("Seat Already Booked... Please select another seat :)");
         }
     }
+    if (screen1==NULL)
+    {
+        printf("\nCreated once\n");
+        screen1=sc;
+        screen1->next=NULL;
+    }
+    else
+    {
+        
+        while (temp->next!=NULL)
+        {
+            temp=temp->next;
+        }
+        temp->next=sc;
+        sc->next=NULL;
+        printf("\nIn here again\n");
+    }
+    
+    return screen1;
 }
 
 void cancelTicket()
 {
+    
 }
 
 void admin()
@@ -267,15 +296,14 @@ void user()
         printf("2. Book Seat\n");
         printf("3. Cancel Seat\n");
         printf("4. Go to previous Menu\n");
-        scanf("%d ", &choice);
-        fflush(stdin);
+        scanf("%d",&choice);
         switch (choice)
         {
         case 1:
             displayMovies();
             break;
         case 2:
-            bookTicket();
+           screen1= bookTicket(screen1);
             break;
         case 3:
             cancelTicket();
