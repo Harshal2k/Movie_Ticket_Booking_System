@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <string.h>
 struct Movie
 {
     char name[30];
@@ -11,13 +11,14 @@ struct Screen
     int screenNum;
     int showID;
     struct Movie *movie;
-    int seats[15][15];
+    int seats[15];
     char dateTime[20];
     struct Screen *next;
 };
 
 void admin()
 {
+
 }
 
 void user()
@@ -71,18 +72,42 @@ void displayMovies()
 
 void bookTicket()
 {
+    struct Movie *u1=(struct Movie *)malloc(sizeof(struct Movie));
+    struct Screen *sc=(struct Screen *)malloc(sizeof(struct Screen));
+    int seatNo;
     char movieName[50];
     char userName[50];
     char mobileNo[10];
     displayMovies();
     printf("\nWhich show would you like to watch");
-    fgets(movieName, 30, stdin);
+    fgets(u1->name, 30, stdin);
 
     printf("\nEnter your name\n");
     fgets(userName, 30, stdin);
 
-    printf("\nEnter your mobile number\n");
+    printf("\nEnter your 10 digit mobile number\n");
     fgets(mobileNo, 30, stdin);
+    int len=strlen(mobileNo);
+    if (len> 10 )   
+    {
+       printf("\nInvalid mobile number\nPlease re-enter mobile no\n");
+       fgets(mobileNo, 30, stdin);
+    }
+    displaySeats();
+    printf("\nSelect seat no: ");
+    scanf("%d",&seatNo);
+    if (sc->seats[seatNo]==1)
+    {
+        printf("\nSeat already booked\n");
+        printf("Please Select another seat\n");
+        scanf("%d",seatNo);
+        sc->seats[seatNo]=1;
+    }
+    else
+    {
+        sc->seats[seatNo]=1;
+    }
+    
 
     
 }
