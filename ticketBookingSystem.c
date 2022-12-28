@@ -9,6 +9,7 @@ struct Movie
 struct Screen
 {
     int screenNum;
+    char showID;
     struct Movie *movie;
     int seats[15][15];
     char dateTime[20];
@@ -21,6 +22,25 @@ void admin()
 
 void user()
 {
+    int choice;
+    while (1)
+    {
+    printf("\n *** Welcome to user section *** \n");
+    printf("1. Shows Available Shows\n");
+    printf("2. Book Seat\n");
+    printf("3. Cancel Seat\n");
+    scanf("%d",&choice);
+    switch (choice)
+    {
+    case 1:
+        
+        break;
+    
+    default:
+        break;
+    }
+    }
+    
 }
 
 void setMovie()
