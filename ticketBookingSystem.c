@@ -15,12 +15,48 @@ struct Screen
     int showID;
     struct Movie *movie;
     int seats[15];
-    char dateTime[20];
+    int day;
+    int month;
+    int year;
     struct Screen *next;
-} *scree1, *screen2, *screen3;
+} *screen1, *screen2, *screen3;
 
 void admin()
 {
+    char password[20];
+    printf("\nEnter Admin Password:");
+    scanf(" ");
+    gets(password, 20, stdin);
+    if (0 != strcmp(password, "harshal2k"))
+    {
+        printf("\nInvalid Password");
+        return;
+    }
+    int option;
+    printf("\n****WELCOME ADMIN****");
+    printf("\n1. Add Movie");
+    printf("\n2. Remove Movie");
+    printf("\n3. Remove Show");
+    printf("\n4. Exit");
+    switch (option)
+    {
+    case 1:
+        char movieName[30];
+        printf("\nEnter Movie Name: ");
+        scanf(" ");
+        gets(movieName, 30, stdin);
+        int dd, mm, yy;
+        printf("Enter date (DD/MM/YYYY format): ");
+        scanf("%d/%d/%d", &dd, &mm, &yy);
+        setMovie();
+        break;
+    case 2:
+        removeMovie();
+        break;
+
+    default:
+        break;
+    }
 }
 
 void user()
@@ -33,7 +69,8 @@ void user()
         printf("2. Book Seat\n");
         printf("3. Cancel Seat\n");
         printf("4. Go to previous Menu\n");
-        scanf("%d", &choice);
+        scanf("%d ", &choice);
+        fflush(stdin);
         switch (choice)
         {
         case 1:
@@ -132,8 +169,37 @@ void bookedShows()
 {
 }
 
-void extraFunction1()
+void isDateValid(int dd, int mm, int yy)
 {
+    // check year
+    if (yy >= 1900 && yy <= 9999)
+    {
+        // check month
+        if (mm >= 1 && mm <= 12)
+        {
+            // check days
+            if ((dd >= 1 && dd <= 31) && (mm == 1 || mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12))
+                printf("Date is valid.\n");
+            else if ((dd >= 1 && dd <= 30) && (mm == 4 || mm == 6 || mm == 9 || mm == 11))
+                printf("Date is valid.\n");
+            else if ((dd >= 1 && dd <= 28) && (mm == 2))
+                printf("Date is valid.\n");
+            else if (dd == 29 && mm == 2 && (yy % 400 == 0 || (yy % 4 == 0 && yy % 100 != 0)))
+                printf("Date is valid.\n");
+            else
+                printf("Day is invalid.\n");
+        }
+        else
+        {
+            printf("Month is not valid.\n");
+        }
+    }
+    else
+    {
+        printf("Year is not valid.\n");
+    }
+
+    return 0;
 }
 
 void extraFunction2()
