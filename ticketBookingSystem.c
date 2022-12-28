@@ -18,7 +18,6 @@ struct Screen
 
 void admin()
 {
-
 }
 
 void user()
@@ -26,32 +25,31 @@ void user()
     int choice;
     while (1)
     {
-    printf("\n *** Welcome to user section *** \n");
-    printf("1. Shows Available Shows\n");
-    printf("2. Book Seat\n");
-    printf("3. Cancel Seat\n");
-    printf("4. Go to previous Menu\n");
-    scanf("%d",&choice);
-    switch (choice)
-    {
-    case 1:
-        displayMovies();
-        break;
-    case 2:
-        bookTicket();
-        break;
-    case 3:
-        cancelTicket();
-        break;
-    case 4:
-        main();
-        break;
-    default:
-        printf("\nInvalid Option :(");
-        break;
+        printf("\n *** Welcome to user section *** \n");
+        printf("1. Shows Available Shows\n");
+        printf("2. Book Seat\n");
+        printf("3. Cancel Seat\n");
+        printf("4. Go to previous Menu\n");
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+            displayMovies();
+            break;
+        case 2:
+            bookTicket();
+            break;
+        case 3:
+            cancelTicket();
+            break;
+        case 4:
+            main();
+            break;
+        default:
+            printf("\nInvalid Option :(");
+            break;
+        }
     }
-    }
-    
 }
 
 void setMovie()
@@ -72,44 +70,52 @@ void displayMovies()
 
 void bookTicket()
 {
-    struct Movie *u1=(struct Movie *)malloc(sizeof(struct Movie));
-    struct Screen *sc=(struct Screen *)malloc(sizeof(struct Screen));
+    
+    struct Screen *sc = (struct Screen *)malloc(sizeof(struct Screen));
     int seatNo;
     char movieName[50];
     char userName[50];
     char mobileNo[10];
     displayMovies();
     printf("\nWhich show would you like to watch");
-    fgets(u1->name, 30, stdin);
-
+    fgets(sc->movie->name, 30, stdin);
+   
     printf("\nEnter your name\n");
     fgets(userName, 30, stdin);
 
-    printf("\nEnter your 10 digit mobile number\n");
-    fgets(mobileNo, 30, stdin);
-    int len=strlen(mobileNo);
-    if (len> 10 )   
+    while (1)
     {
-       printf("\nInvalid mobile number\nPlease re-enter mobile no\n");
-       fgets(mobileNo, 30, stdin);
-    }
-    displaySeats();
-    printf("\nSelect seat no: ");
-    scanf("%d",&seatNo);
-    if (sc->seats[seatNo]==1)
-    {
-        printf("\nSeat already booked\n");
-        printf("Please Select another seat\n");
-        scanf("%d",seatNo);
-        sc->seats[seatNo]=1;
-    }
-    else
-    {
-        sc->seats[seatNo]=1;
-    }
-    
+        printf("\nEnter your 10 digit mobile number\n");
+        fgets(mobileNo, 30, stdin);
+        int len = strlen(mobileNo);
 
-    
+        if (len == 11)
+        {
+
+            break;
+        }
+        else
+        {
+            printf("Invalid Mobile n0\n");
+       
+        }
+    }
+
+    displaySeats();
+  while (1)
+    {
+        printf("\nEnter Seat No. : ");
+        scanf("%d",&seatNo);
+        if (sc->seats[seatNo] == 0)
+        {
+            sc->seats[seatNo]=1;
+            break;
+        }
+        else
+        {
+            printf("Seat Already Booked... Please select another seat :)");
+        }
+    }
 }
 
 void cancelTicket()
