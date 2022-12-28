@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 struct Movie
 {
     char name[30];
@@ -21,75 +22,73 @@ struct Screen
     struct Screen *next;
 } *screen1, *screen2, *screen3;
 
-void admin()
+void extraFunction2()
 {
-    char password[20];
-    printf("\nEnter Admin Password:");
-    scanf(" ");
-    gets(password, 20, stdin);
-    if (0 != strcmp(password, "harshal2k"))
-    {
-        printf("\nInvalid Password");
-        return;
-    }
-    int option;
-    printf("\n****WELCOME ADMIN****");
-    printf("\n1. Add Movie");
-    printf("\n2. Remove Movie");
-    printf("\n3. Remove Show");
-    printf("\n4. Exit");
-    switch (option)
-    {
-    case 1:
-        char movieName[30];
-        printf("\nEnter Movie Name: ");
-        scanf(" ");
-        gets(movieName, 30, stdin);
-        int dd, mm, yy;
-        printf("Enter date (DD/MM/YYYY format): ");
-        scanf("%d/%d/%d", &dd, &mm, &yy);
-        setMovie();
-        break;
-    case 2:
-        removeMovie();
-        break;
-
-    default:
-        break;
-    }
 }
 
-void user()
+void extraFunction3()
 {
-    int choice;
-    while (1)
+}
+
+void extraFunction4()
+{
+}
+
+void extraFunction5()
+{
+}
+
+void extraFunction6()
+{
+}
+
+void extraFunction7()
+{
+}
+
+void extraFunction8()
+{
+}
+
+void extraFunction9()
+{
+}
+
+void extraFunction10()
+{
+}
+
+void isDateValid(int dd, int mm, int yy)
+{
+    // check year
+    if (yy >= 1900 && yy <= 9999)
     {
-        printf("\n *** Welcome to user section *** \n");
-        printf("1. Shows Available Shows\n");
-        printf("2. Book Seat\n");
-        printf("3. Cancel Seat\n");
-        printf("4. Go to previous Menu\n");
-        scanf("%d ", &choice);
-        fflush(stdin);
-        switch (choice)
+        // check month
+        if (mm >= 1 && mm <= 12)
         {
-        case 1:
-            displayMovies();
-            break;
-        case 2:
-            bookTicket();
-            break;
-        case 3:
-            cancelTicket();
-            break;
-        case 4:
-            main();
-            break;
-        default:
-            printf("\nInvalid Option :(");
-            break;
+            // check days
+            if ((dd >= 1 && dd <= 31) && (mm == 1 || mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12))
+                printf("Date is valid.\n");
+            else if ((dd >= 1 && dd <= 30) && (mm == 4 || mm == 6 || mm == 9 || mm == 11))
+                printf("Date is valid.\n");
+            else if ((dd >= 1 && dd <= 28) && (mm == 2))
+                printf("Date is valid.\n");
+            else if (dd == 29 && mm == 2 && (yy % 400 == 0 || (yy % 4 == 0 && yy % 100 != 0)))
+                printf("Date is valid.\n");
+            else
+                printf("Day is invalid.\n");
+        }
+        else
+        {
+            printf("Month is not valid.\n");
         }
     }
+    else
+    {
+        printf("Year is not valid.\n");
+    }
+
+    return;
 }
 
 void setMovie()
@@ -105,6 +104,14 @@ void displaySeats()
 }
 
 void displayMovies()
+{
+}
+
+void showsAvailable()
+{
+}
+
+void bookedShows()
 {
 }
 
@@ -161,81 +168,75 @@ void cancelTicket()
 {
 }
 
-void showsAvailable()
+void admin()
 {
-}
-
-void bookedShows()
-{
-}
-
-void isDateValid(int dd, int mm, int yy)
-{
-    // check year
-    if (yy >= 1900 && yy <= 9999)
+    char password[20];
+    char movieName[30];
+    int dd, mm, yy;
+    printf("\nEnter Admin Password:");
+    scanf(" ");
+    fgets(password, 20, stdin);
+    if (0 != strcmp(password, "harshal2k"))
     {
-        // check month
-        if (mm >= 1 && mm <= 12)
+        printf("\nInvalid Password");
+        return;
+    }
+    int option;
+    printf("\n****WELCOME ADMIN****");
+    printf("\n1. Add Movie");
+    printf("\n2. Remove Movie");
+    printf("\n3. Remove Show");
+    printf("\n4. Exit");
+    switch (option)
+    {
+    case 1:
+        printf("\nEnter Movie Name: ");
+        scanf(" ");
+        fgets(movieName, 30, stdin);
+        printf("Enter date (DD/MM/YYYY format): ");
+        scanf("%d/%d/%d", &dd, &mm, &yy);
+        setMovie();
+        break;
+    case 2:
+        removeMovie();
+        break;
+
+    default:
+        break;
+    }
+}
+
+void user()
+{
+    int choice;
+    while (1)
+    {
+        printf("\n *** Welcome to user section *** \n");
+        printf("1. Shows Available Shows\n");
+        printf("2. Book Seat\n");
+        printf("3. Cancel Seat\n");
+        printf("4. Go to previous Menu\n");
+        scanf("%d ", &choice);
+        fflush(stdin);
+        switch (choice)
         {
-            // check days
-            if ((dd >= 1 && dd <= 31) && (mm == 1 || mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12))
-                printf("Date is valid.\n");
-            else if ((dd >= 1 && dd <= 30) && (mm == 4 || mm == 6 || mm == 9 || mm == 11))
-                printf("Date is valid.\n");
-            else if ((dd >= 1 && dd <= 28) && (mm == 2))
-                printf("Date is valid.\n");
-            else if (dd == 29 && mm == 2 && (yy % 400 == 0 || (yy % 4 == 0 && yy % 100 != 0)))
-                printf("Date is valid.\n");
-            else
-                printf("Day is invalid.\n");
-        }
-        else
-        {
-            printf("Month is not valid.\n");
+        case 1:
+            displayMovies();
+            break;
+        case 2:
+            bookTicket();
+            break;
+        case 3:
+            cancelTicket();
+            break;
+        case 4:
+            main();
+            break;
+        default:
+            printf("\nInvalid Option :(");
+            break;
         }
     }
-    else
-    {
-        printf("Year is not valid.\n");
-    }
-
-    return 0;
-}
-
-void extraFunction2()
-{
-}
-
-void extraFunction3()
-{
-}
-
-void extraFunction4()
-{
-}
-
-void extraFunction5()
-{
-}
-
-void extraFunction6()
-{
-}
-
-void extraFunction7()
-{
-}
-
-void extraFunction8()
-{
-}
-
-void extraFunction9()
-{
-}
-
-void extraFunction10()
-{
 }
 
 int main()
