@@ -14,10 +14,10 @@ struct Screen
     int screenNum;
     int showID;
     struct Movie *movie;
-    int seats[15];
+    int seats[20];
     char dateTime[20];
     struct Screen *next;
-} *scree1, *screen2, *screen3;
+} *scree1=NULL, *screen2, *screen3;
 
 void admin()
 {
@@ -40,7 +40,7 @@ void user()
             displayMovies();
             break;
         case 2:
-            bookTicket();
+            scree1=bookTicket(scree1);
             break;
         case 3:
             cancelTicket();
@@ -71,19 +71,21 @@ void displayMovies()
 {
 }
 
-void bookTicket()
+struct Screen *bookTicket(struct Screen *scree1)
 {
-
-    struct Screen *sc = (struct Screen *)malloc(sizeof(struct Screen));
+    struct Screen *temp=scree1;
+    struct Screen *sc;
+    sc = (struct Screen *)malloc(sizeof(struct Screen));
     int seatNo;
-    char movieName[50];
     char userName[50];
     char mobileNo[10];
     displayMovies();
-    printf("\nWhich show would you like to watch");
-    fgets(sc->movie->name, 30, stdin);
+    // printf("\nWhich show would you like to watch\n");
+    // scanf(" ");
+    // fgets(sc->movie->name, 30, stdin);
 
-    printf("\nEnter your name\n");
+    printf("\nEnter your name");
+    scanf(" ");
     fgets(userName, 30, stdin);
 
     while (1)
@@ -110,6 +112,7 @@ void bookTicket()
         scanf("%d", &seatNo);
         if (sc->seats[seatNo] == 0)
         {
+            
             sc->seats[seatNo] = 1;
             break;
         }
@@ -118,6 +121,33 @@ void bookTicket()
             printf("Seat Already Booked... Please select another seat :)");
         }
     }
+    if (scree1==NULL)
+    {
+        printf("\nHHHHEEERRREEE\n");
+        scree1=sc;
+        scree1->next=NULL;
+        return scree1;
+    }
+    else
+    {
+        
+        while (temp->next!=NULL)
+        {
+            temp=temp->next;
+        }
+        
+        temp->next=sc;
+        sc->next=NULL;
+        return scree1;
+    }
+    
+    while (temp!=NULL)
+    {
+        printf("%d ",temp->seats[seatNo]);
+        temp=temp->next;
+    }
+    
+    return scree1;
 }
 
 void cancelTicket()
@@ -175,6 +205,7 @@ void extraFunction10()
 int main()
 {
     int option;
+   
     printf("\nMOVIE TICKET BOOKING SYSTEM");
     while (1)
     {
