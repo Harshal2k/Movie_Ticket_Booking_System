@@ -29,6 +29,7 @@ void user()
     printf("1. Shows Available Shows\n");
     printf("2. Book Seat\n");
     printf("3. Cancel Seat\n");
+    printf("4. Go to previous Menu\n");
     scanf("%d",&choice);
     switch (choice)
     {
@@ -38,7 +39,14 @@ void user()
     case 2:
         bookTicket();
         break;
+    case 3:
+        cancelTicket();
+        break;
+    case 4:
+        main();
+        break;
     default:
+        printf("\nInvalid Option :(");
         break;
     }
     }
@@ -63,7 +71,20 @@ void displayMovies()
 
 void bookTicket()
 {
+    char movieName[50];
+    char userName[50];
+    char mobileNo[10];
+    displayMovies();
+    printf("\nWhich show would you like to watch");
+    fgets(movieName, 30, stdin);
 
+    printf("\nEnter your name\n");
+    fgets(userName, 30, stdin);
+
+    printf("\nEnter your mobile number\n");
+    fgets(mobileNo, 30, stdin);
+
+    
 }
 
 void cancelTicket()
