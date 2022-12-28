@@ -126,7 +126,7 @@ struct Screen *bookTicket(struct Screen *scree1)
         printf("\nHHHHEEERRREEE\n");
         scree1=sc;
         scree1->next=NULL;
-        return scree1;
+        
     }
     else
     {
