@@ -4,6 +4,9 @@ struct Movie
 {
     char name[30];
     int durationMin;
+    int screen1;
+    int screen2;
+    int screen3;
 };
 
 struct Screen
@@ -14,7 +17,7 @@ struct Screen
     int seats[15];
     char dateTime[20];
     struct Screen *next;
-};
+} *scree1, *screen2, *screen3;
 
 void admin()
 {
@@ -70,7 +73,7 @@ void displayMovies()
 
 void bookTicket()
 {
-    
+
     struct Screen *sc = (struct Screen *)malloc(sizeof(struct Screen));
     int seatNo;
     char movieName[50];
@@ -79,7 +82,7 @@ void bookTicket()
     displayMovies();
     printf("\nWhich show would you like to watch");
     fgets(sc->movie->name, 30, stdin);
-   
+
     printf("\nEnter your name\n");
     fgets(userName, 30, stdin);
 
@@ -97,18 +100,17 @@ void bookTicket()
         else
         {
             printf("Invalid Mobile n0\n");
-       
         }
     }
 
     displaySeats();
-  while (1)
+    while (1)
     {
         printf("\nEnter Seat No. : ");
-        scanf("%d",&seatNo);
+        scanf("%d", &seatNo);
         if (sc->seats[seatNo] == 0)
         {
-            sc->seats[seatNo]=1;
+            sc->seats[seatNo] = 1;
             break;
         }
         else
