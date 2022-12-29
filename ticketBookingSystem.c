@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 struct Movie
 {
     char name[30];
@@ -39,22 +40,45 @@ void showMovies(struct Movie **head)
 
 void setScreen(struct Screen **screenHead, int screenNum, int showId, struct Movie **movie)
 {
+    char date[30];
+    time_t t;
+    t = time(NULL);
+    struct tm tm = *localtime(&t);
+    // printf("Current Date: %d-%d-%d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
     printf("\n====== IN SETSCREEN %d", showId);
+    snprintf(date, 30, "%d-%d-%d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+    // strcat(date, 1);
+    // strcat(date, "-");
+    // strcat(date, (tm.tm_mon + 1));
+    // strcat(date, "-");
+    // strcat(date, (tm.tm_year + 1900));
+    printf("\nDATE: %s", date);
     struct Screen *newShow = (struct Screen *)malloc(sizeof(struct Screen));
     newShow->screenNum = screenNum;
     newShow->showID = showId;
     newShow->movie = *movie;
     newShow->next = NULL;
-    int minutes = (newShow->movie->durationMin * showId) + 540 + 30;
-    int hours = minutes / 60;
-    int minu = minutes % 60;
-    if ((hours - 12) <= 0)
+    if (showId == 1)
     {
-        printf("\nHOURS: %d:%d AM", hours, minu);
+        printf("\nHOURS: 9:00 AM");
     }
     else
     {
-        printf("\nHOURS: %d:%d PM", (hours - 12), minu);
+        int minutes = ((newShow->movie->durationMin + 30) * (showId - 1)) + 540;
+        int hours = minutes / 60;
+        int minu = minutes % 60;
+        if ((hours - 12) < 0)
+        {
+            printf("\nHOURS: %d:%d AM", hours, minu);
+        }
+        else if ((hours - 12) == 0)
+        {
+            printf("\nHOURS: %d:%d PM", hours, minu);
+        }
+        else
+        {
+            printf("\nHOURS: %d:%d PM", (hours - 12), minu);
+        }
     }
     struct Screen *temp;
     temp = *screenHead;
@@ -226,10 +250,11 @@ void setMovie(struct Movie **head, struct Screen **sHead1, struct Screen **sHead
         scanf(" %c", &option);
         if (option == 'y' || option == 'Y')
         {
-            int shows = (960 / (duration + 30)) + 1;
-            int count;
+            int shows = (960 / (duration + 30));
+            printf("\nSHOWS: %d", shows);
             for (int j = 0; j < shows; j++)
             {
+                printf("\ni = %d", j);
                 if (i == 0)
                 {
                     setScreen(&screen1, 1, (j + 1), &newMovie);
@@ -407,6 +432,7 @@ void bookTicket()
     struct Screen *temp3 = screen3;
     if (scrno == 1)
     {
+        int flag=0;
         while (temp1 != NULL)
         {
             while (1)
@@ -426,19 +452,23 @@ void bookTicket()
                             printf("\nSelect seat No :");
                             scanf("%d", &seatno);
                             seatno = seatno - 1;
-                            if (screen1->seats[seatno] == 1)
+                            if (temp1->seats[seatno] == 1)
                             {
                                 printf("Seat Already Booked Please Select another seat\n");
                             }
                             else
                             {
-                                screen1->seats[seatno] = 1;
+                                temp1->seats[seatno] = 1;
                                 break;
                             }
                         }
                     }
+                    flag=1;
                 }
 
+                break;
+            }
+            if(flag==1){
                 break;
             }
             printf("\n-----------------------------------");
@@ -449,11 +479,12 @@ void bookTicket()
         }
 
         printf("\nYou have booked\n");
+        printf("\nShow");
         for (int i = 0; i < 15; i++)
         {
-            if (screen1->seats[i] == 1)
+            if (temp1->seats[i] == 1)
             {
-                printf("%d ", screen1->seats[i]);
+                printf("%d ", temp1->seats[i]);
             }
             else
             {
