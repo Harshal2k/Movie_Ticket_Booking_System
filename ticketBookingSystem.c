@@ -26,7 +26,7 @@ struct Screen
     int screenNum;
     int showID;
     struct Movie *movie;
-    int seats[15];
+    int seats[100];
     char date[20];
     char time[20];
     int seatsCount;
@@ -544,7 +544,7 @@ void displaySeats(struct Screen **shead)
     }
 }
 
-void displayBill(struct Screen **shead, struct Movie **mhead, int quantity, char name[])
+void displayBill(struct Screen **shead, struct Movie **mhead, int quantity, char name[], int price)
 {
     struct Screen *temp = *shead;
     struct Movie *mov = *mhead;
@@ -563,7 +563,7 @@ void displayBill(struct Screen **shead, struct Movie **mhead, int quantity, char
             printf("\t                                              Time       : %s\n", temp->time);
             printf("\t                                              Screen No. : %d\n", temp->screenNum);
             printf("\t                                              seats No.  : %d  \n", no);
-            printf("\t                                              price      : 1000  \n\n");
+            printf("\t                                              price      : %d  \n\n", price);
             printf("\t============================================================\n");
         }
     }
@@ -584,7 +584,7 @@ void bookTicket()
 
     char movieNam[20], name[20];
     int shid, quantity, seatno, scrno;
-
+    int price1 = 0, total = 0, price2 = 0, price3 = 0;
     printf("\nEnter name of the movie: ");
     scanf(" ");
     fgets(movieNam, 20, stdin);
@@ -656,6 +656,18 @@ SHID:
                         {
                             printf("\nSelect seat No :");
                             scanf("%d", &seatno);
+                            if (seatno <= 30)
+                            {
+                                price3 = temp->price3 + price3;
+                            }
+                            else if (seatno >= 80)
+                            {
+                                price1 = temp->price1 + price1;
+                            }
+                            else if (seatno > 30 && seatno < 80)
+                            {
+                                price2 = temp->price2 + price2;
+                            }
                             seatno = seatno - 1;
                             if (temp1->seats[seatno] == 1)
                             {
@@ -683,7 +695,21 @@ SHID:
         printf("\nYou have booked seats that are starred ( * )\n");
         displaySeats(&temp1);
 
-        displayBill(&temp1, &temp, quantity, name);
+        total=price1+price2+price3;
+        if (price1 != 0)
+        {
+            displayBill(&temp1, &temp, quantity, name, temp->price1);
+        }
+        else if (price2 != 0)
+        {
+            displayBill(&temp1, &temp, quantity, name, temp->price2);
+        }
+        else if (price3 != 0)
+        {
+            displayBill(&temp1, &temp, quantity, name, temp->price3);
+        }
+         printf("\t                      Total      : %d  \n\n", total);
+        printf("\t============================================================\n");
     }
 
     else if (scrno == 2 && temp->screen2 == 1)
@@ -733,7 +759,7 @@ SHID:
         }
         printf("\nYou have booked seats that are starred ( * )\n");
         displaySeats(&temp1);
-        displayBill(&temp2, &temp, quantity, name);
+        // displayBill(&temp2, &temp, quantity, name);
     }
     else if (scrno == 3 && temp->screen3 == 1)
     {
@@ -782,7 +808,7 @@ SHID:
         }
         printf("\nYou have booked seats that are starred ( * )\n");
         displaySeats(&temp3);
-        displayBill(&temp3, &temp, quantity, name);
+        // displayBill(&temp3, &temp, quantity, name);
     }
 
     else
