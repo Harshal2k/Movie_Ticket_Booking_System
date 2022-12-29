@@ -653,7 +653,7 @@ SHID:
                             {
                                 price2 = temp->price2 + price2;
                             }
-                            //seatno = seatno - 1;
+                            seatno = seatno - 1;
                             if (temp1->seats[seatno] == 1)
                             {
                                 printf("\n%s%s Seat Already Booked Please Select another seat %s\n", RED_BG, WHITE_TXT, RESET);
