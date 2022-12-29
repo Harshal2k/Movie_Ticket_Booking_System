@@ -516,17 +516,19 @@ void displaySeats(struct Screen **shead)
 {
     struct Screen *vacant;
     vacant = *shead;
-    for (int i = 1; i <= 100; i++)
+    int no;
+    for (int i = 0; i < 100; i++)
     {
-        if (i % 9 == 0)
+        if (i % 10== 0)
             printf("\n\n");
+       
         if (vacant->seats[i] == 1)
         {
             printf("*\t");
         }
         else
         {
-            printf("%d\t", i);
+            printf("%d\t", i+1);
         }
     }
 }
@@ -701,6 +703,10 @@ SHID:
         }
         printf("\t                      Total      : %d  \n\n", total);
         printf("\t============================================================\n");
+        price1=0;
+        price2=0;
+        price3=0;
+        temp1=screen1;
     }
 
     else if (scrno == 2 && temp->screen2 == 1)
