@@ -365,31 +365,43 @@ void bookTicket()
     char movieNam[20];
     int shid, quantity, seatno, scrno;
     printf("\nWhich Movie you want to see?\n");
-    scanf("%s", movieNam);
+    scanf("%s",movieNam);
     struct Movie *temp;
     temp = movieHead;
+    int flagMovie=0;
     while (temp != NULL)
     {
         if (strcmp(movieNam, temp->name) == 0)
             {
+                flagMovie=1;
                 break;
             }
-        else
-        {
-            printf("\nInvalid Movie Name\n");
-            printf("Please enter again\n");
-            bookTicket();
-        }
+       temp=temp->next;
     }
-    
+       if (flagMovie==0)
+       {
+        printf("Enter valid movie name");
+        bookTicket();
+       }
+    ScreenNo:
     printf("\nEnter Screen No :");
     scanf("%d", &scrno);
+    if (!(scrno==1 && screen1->screenNum==1 ) ||
+        (scrno==2 && screen2->screenNum==1 ) ||
+        (scrno==3 && screen3->screenNum==1 ) )
+    {
+        printf("\nEnter valid Screen Number: ");
+        goto ScreenNo;
+    }
+
+    
     printf("\nEnter  show ID :");
     scanf("%d", &shid);
+
     struct Screen *temp1 = screen1;
     struct Screen *temp2 = screen2;
     struct Screen *temp3 = screen3;
-    if (scrno == 1 && movieHead->screen1==1)
+    if (scrno == 1 && temp->screen1==1)
     {
         int flag=0;
         SHID:
@@ -425,21 +437,14 @@ void bookTicket()
                     }
                     flag=1;
                 }
-                else{
-                    printf("\nPlease Enter Valid ShowID: \n");
-                    scanf("%d",&shid);
-                    goto SHID;
-                }
                 break;
             }
             if(flag==1){
                 break;
             }
-            printf("\n-----------------------------------");
-
-            printf("\nShowId: %d", temp1->showID);
+           
             temp1 = temp1->next;
-            printf("\n-----------------------------------");
+            
         }
 
         printf("\nYou have booked\n");
@@ -455,7 +460,11 @@ void bookTicket()
             }
         }
     }
-    else if (scrno == 2 && movieHead->screen2==1)
+    // else{
+    //     printf("\nNo Movies Today GO HOME :)\n");
+    //     user();
+    // }
+    else if (scrno == 2 && temp->screen2==1)
     {
         int flag=0;
         while (temp2 != NULL)
@@ -515,8 +524,7 @@ void bookTicket()
             }
         }
     }
-
-    else if (scrno == 3 && movieHead->screen3==1)
+    else if (scrno == 3 && temp->screen3==1)
     {
         int flag=0;
         while (temp3 != NULL)
@@ -576,9 +584,10 @@ void bookTicket()
             }
         }
     }
-    else
-    {
-        printf("\nInvlaid Choice\n");
+    else{
+        printf("\nEnter Valid Screen NO :\n");
+       scanf("%d",&scrno);
+      
     }
 }
 
