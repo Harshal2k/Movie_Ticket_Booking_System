@@ -329,7 +329,7 @@ void bookedShows()
 {
 }
 
-struct Screen  *bookTicket(struct Screen *screen1)
+void bookTicket()
 {
 
    struct Screen *temp=screen1;
@@ -364,7 +364,7 @@ struct Screen  *bookTicket(struct Screen *screen1)
         }
         else
         {
-            printf("Invalid Mobile n0\n");
+            printf("Invalid Mobile number\n");
         }
     }
 
@@ -375,40 +375,36 @@ struct Screen  *bookTicket(struct Screen *screen1)
         scanf("%d", &seatNo);
         
         
-        if (sc->seats[seatNo] == 0)
-        {
-            sc->seats[seatNo] = 1;
-            break;
-        }
-        else
+        if (sc->seats[seatNo] != 0)
         {
             printf("Seat Already Booked... Please select another seat :)");
         }
-    }
-    if (screen1==NULL)
-    {
-        printf("\nCreated once\n");
-        screen1=sc;
-        screen1->next=NULL;
-    }
-    else
-    {
-        
-        while (temp->next!=NULL)
+        else
         {
-            temp=temp->next;
+            sc->seats[seatNo] = 1;
+            break;
+            
         }
-        temp->next=sc;
-        sc->next=NULL;
-        printf("\nIn here again\n");
+    }
+
+    for (int i = 0; i < 15; i++)
+    {
+        printf("%d ",sc->seats[i]);
     }
     
-    return screen1;
+    
 }
 
 void cancelTicket()
 {
-    
+    struct Screen *p=screen1;
+    int i=0;
+    while (p!=NULL)
+    {
+        printf("%d ",p->seats[i]);
+        p=p->next;
+        i++;
+    }
 }
 
 void admin()
@@ -486,7 +482,7 @@ void user()
             displayMovies();
             break;
         case 2:
-           screen1= bookTicket(screen1);
+           bookTicket();
             break;
         case 3:
             cancelTicket();
