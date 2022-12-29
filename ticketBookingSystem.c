@@ -333,7 +333,7 @@ void bookTicket()
 {
 
 //    struct Screen *temp=screen1;
-     screen1 = (struct Screen *)malloc(sizeof(struct Screen));
+     //screen1 = (struct Screen *)malloc(sizeof(struct Screen));
 //     struct Movie *mov=(struct Movie *)malloc(sizeof(struct Movie));
 //     int seatNo;
 //     char movieName[50];
@@ -421,6 +421,19 @@ int scrno,quantity,seatno;
        
     }
     
+    printf("\nYou have booked\n");
+    for (int i = 0; i < 15; i++)
+    {
+        if (screen1->seats[i]==1)
+        {
+            printf("%d ",screen1->seats[i]);
+        }
+        else
+        {
+            printf("0 ");
+        }
+        
+    }
     
     
 }
