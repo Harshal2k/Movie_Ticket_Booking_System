@@ -679,6 +679,7 @@ SHID:
         if (flag==0)
         {
             printf("\n\nEnter Valid ShowID:\n\n");
+            temp1=screen1;
             goto SHID;
         }
         printf("\n\n");
@@ -762,6 +763,7 @@ SHID:
         if (flag==0)
         {
             printf("\n\nEnter Valid ShowID:\n\n");
+            temp2=screen2;
             goto SHID;
         }
         
@@ -844,6 +846,7 @@ SHID:
         if (flag==0)
         {
             printf("\n\nEnter Valid ShowID:\n\n");
+            temp3=screen3;
             goto SHID;
         }
         printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
@@ -1023,6 +1026,12 @@ void cancelTicket()
 
             temp2 = temp2->next;
         }
+         if (flag==0)
+        {
+            printf("\n\nEnter valid showID\n");
+            temp2=screen2;
+            goto SH;
+        }
         printf("\n\n");
         printf("\n\nSEAT DELETED\n\n");
         displaySeats(&temp1);
@@ -1070,6 +1079,12 @@ void cancelTicket()
             }
 
             temp3 = temp3->next;
+        }
+         if (flag==0)
+        {
+            printf("\n\nEnter valid showID\n");
+            temp3=screen3;
+            goto SH;
         }
         printf("\n\n");
         printf("\n\nSEAT DELETED\n\n");
