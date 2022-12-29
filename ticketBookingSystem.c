@@ -392,6 +392,7 @@ void bookTicket()
     if (scrno == 1 && movieHead->screen1==1)
     {
         int flag=0;
+        SHID:
         while (temp1 != NULL)
         {
             while (1)
@@ -424,7 +425,11 @@ void bookTicket()
                     }
                     flag=1;
                 }
-
+                else{
+                    printf("\nPlease Enter Valid ShowID: \n");
+                    scanf("%d",&shid);
+                    goto SHID;
+                }
                 break;
             }
             if(flag==1){
@@ -438,7 +443,6 @@ void bookTicket()
         }
 
         printf("\nYou have booked\n");
-        printf("\nShow");
         for (int i = 0; i < 15; i++)
         {
             if (temp1->seats[i] == 1)
