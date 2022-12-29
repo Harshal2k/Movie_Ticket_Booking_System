@@ -367,8 +367,22 @@ void displaySeats(struct Screen **shead)
     }
 }
 
-void displayMovies()
+void displayBill(struct Screen **shead,struct Movie **mhead)
 {
+    struct Screen *temp=*shead;
+    struct Movie *mov=*mhead;
+    printf("\n\n");
+        printf("\t-----------------        VASCO 1920        ----------------\n");
+        printf("\t============================================================\n");
+        printf("\t Booking ID : %d \t\t\tShow Name : %s\n",temp->showID,mov->name);
+        printf("\t Customer  : LALIT \n");
+        printf("\t\t\t                              Date      : 15-04-2019\n");
+        printf("\t                                              Time       : 09:00pm\n");
+        printf("\t                                              Screen No. : %d\n",temp->screenNum);
+        printf("\t                                              seats No.  : %d  \n",temp->seats);
+        printf("\t                                              price      : 1000  \n\n");
+        printf("\t============================================================\n");
+        return;
 }
 
 void showsAvailable()
@@ -480,6 +494,7 @@ SHID:
         //         printf("0 ");
         //     }
         // }
+        displayBill(&temp1,&temp);
     }
     // else{
     //     printf("\nNo Movies Today GO HOME :)\n");
@@ -588,6 +603,7 @@ SHID:
         printf("\nEnter Valid Screen NO :\n");
         scanf("%d", &scrno);
     }
+    
 }
 
 void cancelTicket()
