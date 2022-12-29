@@ -17,7 +17,7 @@ struct Screen
     int screenNum;
     int showID;
     struct Movie *movie;
-    int seats[15];
+    int seats[100];
     int day;
     int month;
     int year;
@@ -342,9 +342,23 @@ void removeMovie(struct Movie **head)
     }
 }
 
-void displaySeats()
+void displaySeats(struct Screen **shead)
 {
-    
+    struct Screen *vacant;
+    vacant = *shead;
+    for (int i = 0; i < 100; i++)
+    {
+        if(i%10==0)
+				printf("\n");
+        if (vacant->seats[i] == 1)
+        {
+            printf("*\t", vacant->seats[i]);
+        }
+        else
+        {
+            printf("0\t");
+        }
+    }
 }
 
 void displayMovies()
@@ -362,54 +376,49 @@ void bookedShows()
 void bookTicket()
 {
 
-    
     char movieNam[20];
     int shid, quantity, seatno, scrno;
-    displayMovies(&screen1,&screen2,&screen3);
+
     printf("\nWhich Movie you want to see?\n");
-    scanf("%s",movieNam);
+    scanf("%s", movieNam);
     struct Movie *temp;
     temp = movieHead;
-    int flagMovie=0;
+    int flagMovie = 0;
     while (temp != NULL)
     {
         if (strcmp(movieNam, temp->name) == 0)
-            {
-                flagMovie=1;
-                break;
-            }
-       temp=temp->next;
+        {
+            flagMovie = 1;
+            break;
+        }
+        temp = temp->next;
     }
-       if (flagMovie==0)
-       {
+    if (flagMovie == 0)
+    {
         printf("Enter valid movie name");
         bookTicket();
-       }
-    ScreenNo:
+    }
+ScreenNo:
     printf("\nEnter Screen No :");
     scanf("%d", &scrno);
-    if (!(scrno==1 && screen1->screenNum==1 ) ||
-        (scrno==2 && screen2->screenNum==1 ) ||
-        (scrno==3 && screen3->screenNum==1 ) )
+    if (!(scrno == 1 && screen1->screenNum == 1) ||
+        (scrno == 2 && screen2->screenNum == 1) ||
+        (scrno == 3 && screen3->screenNum == 1))
     {
         printf("\nEnter valid Screen Number: ");
         goto ScreenNo;
     }
 
-    
-    
-   
-    
     struct Screen *temp1 = screen1;
     struct Screen *temp2 = screen2;
     struct Screen *temp3 = screen3;
-    SHID:
+SHID:
     printf("\nEnter  show ID :");
-    scanf("%d", &shid);   
-    if (scrno == 1 && temp->screen1==1)
+    scanf("%d", &shid);
+    if (scrno == 1 && temp->screen1 == 1)
     {
-        int flag=0;
-       
+        int flag = 0;
+
         while (temp1 != NULL)
         {
             while (1)
@@ -417,13 +426,12 @@ void bookTicket()
 
                 if (shid == temp1->showID)
                 {
-
                     printf("\nHow Many Tickets :");
                     scanf("%d", &quantity);
-                    printf("Select Seact Numbers :");
+                    displaySeats(&temp1);
+                    
                     for (int i = 0; i < quantity; i++)
                     {
-                        // displaySeats();
                         while (1)
                         {
                             printf("\nSelect seat No :");
@@ -440,38 +448,40 @@ void bookTicket()
                             }
                         }
                     }
-                    flag=1;
+                    flag = 1;
                 }
                 break;
             }
-            if(flag==1){
+            if (flag == 1)
+            {
                 break;
             }
-           
-            temp1 = temp1->next;
-            
-        }
 
-        printf("\nYou have booked\n");
-        for (int i = 0; i < 15; i++)
-        {
-            if (temp1->seats[i] == 1)
-            {
-                printf("%d ", temp1->seats[i]);
-            }
-            else
-            {
-                printf("0 ");
-            }
+            temp1 = temp1->next;
         }
+        printf("\nYou have booked seats that are starred ( * )\n");
+         displaySeats(&temp1);
+         
+        // printf("\nYou have booked\n");
+        // for (int i = 0; i < 100; i++)
+        // {
+        //     if (temp1->seats[i] == 1)
+        //     {
+        //         printf("%d ", temp1->seats[i]);
+        //     }
+        //     else
+        //     {
+        //         printf("0 ");
+        //     }
+        // }
     }
     // else{
     //     printf("\nNo Movies Today GO HOME :)\n");
     //     user();
     // }
-    else if (scrno == 2 && temp->screen2==1)
+    else if (scrno == 2 && temp->screen2 == 1)
     {
-        int flag=0;
+        int flag = 0;
         while (temp2 != NULL)
         {
             while (1)
@@ -482,7 +492,7 @@ void bookTicket()
 
                     printf("How Many Tickets :");
                     scanf("%d", &quantity);
-                    printf("Select Seact Numbers :");
+                     displaySeats(&temp1);
                     for (int i = 0; i < quantity; i++)
                     {
                         // displaySeats();
@@ -502,36 +512,25 @@ void bookTicket()
                             }
                         }
                     }
-                     flag=1;
+                    flag = 1;
                 }
 
                 break;
             }
-            if(flag==1){
+            if (flag == 1)
+            {
                 break;
             }
-            printf("\n-----------------------------------");
-
-            printf("\nShowId: %d", temp2->showID);
+            
             temp2 = temp2->next;
-            printf("\n-----------------------------------");
+           
         }
-        printf("\nYou have booked\n");
-        for (int i = 0; i < 15; i++)
-        {
-            if (screen2->seats[i] == 1)
-            {
-                printf("%d ", screen2->seats[i]);
-            }
-            else
-            {
-                printf("0 ");
-            }
-        }
+        printf("\nYou have booked seats that are starred ( * )\n");
+         displaySeats(&temp1);
     }
-    else if (scrno == 3 && temp->screen3==1)
+    else if (scrno == 3 && temp->screen3 == 1)
     {
-        int flag=0;
+        int flag = 0;
         while (temp3 != NULL)
         {
             while (1)
@@ -542,7 +541,7 @@ void bookTicket()
 
                     printf("How Many Tickets :");
                     scanf("%d", &quantity);
-                    printf("Select Seact Numbers :");
+                     displaySeats(&temp1);
                     for (int i = 0; i < quantity; i++)
                     {
                         // displaySeats();
@@ -562,37 +561,26 @@ void bookTicket()
                             }
                         }
                     }
-                     flag=1;
+                    flag = 1;
                 }
 
                 break;
             }
-            if(flag==1){
+            if (flag == 1)
+            {
                 break;
             }
-            printf("\n-----------------------------------");
-
-            printf("\nShowId: %d", temp2->showID);
+           
             temp2 = temp2->next;
-            printf("\n-----------------------------------");
+            
         }
-        printf("\nYou have booked\n");
-        for (int i = 0; i < 15; i++)
-        {
-            if (screen2->seats[i] == 1)
-            {
-                printf("%d ", screen2->seats[i]);
-            }
-            else
-            {
-                printf("0 ");
-            }
-        }
+        printf("\nYou have booked seats that are starred ( * )\n");
+         displaySeats(&temp1);
     }
-    else{
+    else
+    {
         printf("\nEnter Valid Screen NO :\n");
-       scanf("%d",&scrno);
-      
+        scanf("%d", &scrno);
     }
 }
 
