@@ -9,7 +9,7 @@ struct Movie
     int screen1;
     int screen2;
     int screen3;
-     int price1;
+    int price1;
     int price2;
     int price3;
     struct Movie *next;
@@ -225,9 +225,9 @@ void setMovie(struct Movie **head, struct Screen **sHead1, struct Screen **sHead
     newMovie->screen1 = 0;
     newMovie->screen2 = 0;
     newMovie->screen3 = 0;
-    newMovie->price1=500;
-    newMovie->price2=350;
-    newMovie->price3=250;
+    newMovie->price1 = 500;
+    newMovie->price2 = 350;
+    newMovie->price3 = 250;
     newMovie->next = NULL;
     strcpy(newMovie->name, movieName);
     newMovie->durationMin = duration;
@@ -354,8 +354,8 @@ void displaySeats(struct Screen **shead)
     vacant = *shead;
     for (int i = 0; i < 100; i++)
     {
-        if(i%10==0)
-				printf("\n\n");
+        if (i % 10 == 0)
+            printf("\n\n");
         if (vacant->seats[i] == 1)
         {
             printf("*\t", vacant->seats[i]);
@@ -367,23 +367,35 @@ void displaySeats(struct Screen **shead)
     }
 }
 
-void displayBill(struct Screen **shead,struct Movie **mhead)
+void displayBill(struct Screen **shead, struct Movie **mhead, int quantity)
 {
-    struct Screen *temp=*shead;
-    struct Movie *mov=*mhead;
-    printf("\n\n");
-        printf("\t-----------------        VASCO 1920        ----------------\n");
-        printf("\t============================================================\n");
-        printf("\t Booking ID : %d \t\t\tShow Name : %s\n",temp->showID,mov->name);
-        printf("\t Customer  : LALIT \n");
-        printf("\t\t\t                              Date      : 15-04-2019\n");
-        printf("\t                                              Time       : 09:00pm\n");
-        printf("\t                                              Screen No. : %d\n",temp->screenNum);
-        printf("\t                                              seats No.  : %d  \n",temp->seats);
-        printf("\t                                              price      : 1000  \n\n");
-        printf("\t============================================================\n");
-        return;
+    struct Screen *temp = *shead;
+    struct Movie *mov = *mhead;
+   int no;
+        for (int i = 0; i < 100; i++)
+        {
+            if (temp->seats[i] == 1)
+            {
+                no=i+1;
+                printf("\n\n");
+                printf("\t-----------------        VASCO 1920        ----------------\n");
+                printf("\t============================================================\n");
+                printf("\t Booking ID : %d \t\t\tShow Name : %s\n", temp->showID, mov->name);
+                printf("\t Customer  : LALIT \n");
+                printf("\t\t\t                              Date      : 15-04-2019\n");
+                printf("\t                                              Time       : 09:00pm\n");
+                printf("\t                                              Screen No. : %d\n", temp->screenNum);
+                printf("\t                                              seats No.  : %d  \n", no);
+                printf("\t                                              price      : 1000  \n\n");
+                printf("\t============================================================\n");
+               
+            }
+        }
+    
+return;
 }
+
+
 
 void showsAvailable()
 {
@@ -449,7 +461,7 @@ SHID:
                     printf("\nHow Many Tickets :");
                     scanf("%d", &quantity);
                     displaySeats(&temp1);
-                    
+
                     for (int i = 0; i < quantity; i++)
                     {
                         while (1)
@@ -480,8 +492,8 @@ SHID:
             temp1 = temp1->next;
         }
         printf("\nYou have booked seats that are starred ( * )\n");
-         displaySeats(&temp1);
-         
+        displaySeats(&temp1);
+
         // printf("\nYou have booked\n");
         // for (int i = 0; i < 100; i++)
         // {
@@ -494,7 +506,7 @@ SHID:
         //         printf("0 ");
         //     }
         // }
-        displayBill(&temp1,&temp);
+        displayBill(&temp1, &temp, quantity);
     }
     // else{
     //     printf("\nNo Movies Today GO HOME :)\n");
@@ -513,7 +525,7 @@ SHID:
 
                     printf("How Many Tickets :");
                     scanf("%d", &quantity);
-                     displaySeats(&temp1);
+                    displaySeats(&temp1);
                     for (int i = 0; i < quantity; i++)
                     {
                         // displaySeats();
@@ -542,12 +554,11 @@ SHID:
             {
                 break;
             }
-            
+
             temp2 = temp2->next;
-           
         }
         printf("\nYou have booked seats that are starred ( * )\n");
-         displaySeats(&temp1);
+        displaySeats(&temp1);
     }
     else if (scrno == 3 && temp->screen3 == 1)
     {
@@ -562,7 +573,7 @@ SHID:
 
                     printf("How Many Tickets :");
                     scanf("%d", &quantity);
-                     displaySeats(&temp1);
+                    displaySeats(&temp1);
                     for (int i = 0; i < quantity; i++)
                     {
                         // displaySeats();
@@ -591,19 +602,17 @@ SHID:
             {
                 break;
             }
-           
+
             temp3 = temp3->next;
-            
         }
         printf("\nYou have booked seats that are starred ( * )\n");
-         displaySeats(&temp1);
+        displaySeats(&temp1);
     }
     else
     {
         printf("\nEnter Valid Screen NO :\n");
         scanf("%d", &scrno);
     }
-    
 }
 
 void cancelTicket()
