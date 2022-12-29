@@ -45,6 +45,7 @@ void setScreen(struct Screen **screenHead, int screenNum, int showId, struct Mov
     newShow->showID = showId;
     newShow->movie = *movie;
     newShow->next = NULL;
+    
     struct Screen *temp;
     temp = *screenHead;
     if (temp == NULL)
