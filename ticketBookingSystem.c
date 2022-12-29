@@ -878,7 +878,7 @@ void admin()
     int option;
     while (1)
     {
-        printf("\n%s%s   WELCOME TO ADMIN SECTION   ", BLK_BG, WHITE_TXT, RESET);
+        printf("\n%s%s   WELCOME TO ADMIN SECTION   %s", BLK_BG, WHITE_TXT, RESET);
         printf("\n%s%s 1. Add Movie                 %s", WHT_BG, BLACK_TXT, RESET);
         printf("\n%s%s 2. Remove Movie              %s", BLU_BG, WHITE_TXT, RESET);
         printf("\n%s%s 3. Remove Show               %s", WHT_BG, BLACK_TXT, RESET);
