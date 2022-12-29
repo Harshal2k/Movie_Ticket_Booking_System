@@ -653,7 +653,7 @@ SHID:
                             {
                                 price2 = temp->price2 + price2;
                             }
-                            seatno = seatno - 1;
+                            //seatno = seatno - 1;
                             if (temp1->seats[seatno] == 1)
                             {
                                 printf("\n%s%s Seat Already Booked Please Select another seat %s\n", RED_BG, WHITE_TXT, RESET);
@@ -675,6 +675,11 @@ SHID:
             }
 
             temp1 = temp1->next;
+        }
+        if (flag==0)
+        {
+            printf("\n\nEnter Valid ShowID:\n\n");
+            goto SHID;
         }
         printf("\n\n");
         printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
@@ -754,6 +759,12 @@ SHID:
 
             temp2 = temp2->next;
         }
+        if (flag==0)
+        {
+            printf("\n\nEnter Valid ShowID:\n\n");
+            goto SHID;
+        }
+        
         printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
         displaySeats(&temp1);
         total = price1 + price2 + price3;
@@ -829,6 +840,11 @@ SHID:
             }
 
             temp3 = temp3->next;
+        }
+        if (flag==0)
+        {
+            printf("\n\nEnter Valid ShowID:\n\n");
+            goto SHID;
         }
         printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
         displaySeats(&temp3);
