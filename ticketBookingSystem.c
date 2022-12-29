@@ -571,7 +571,7 @@ SHID:
                 break;
             }
            
-            temp2 = temp2->next;
+            temp3 = temp3->next;
             
         }
         printf("\nYou have booked seats that are starred ( * )\n");
