@@ -559,6 +559,7 @@ SHID:
         }
         printf("\nYou have booked seats that are starred ( * )\n");
         displaySeats(&temp1);
+        displayBill(&temp2, &temp, quantity);
     }
     else if (scrno == 3 && temp->screen3 == 1)
     {
@@ -606,7 +607,8 @@ SHID:
             temp3 = temp3->next;
         }
         printf("\nYou have booked seats that are starred ( * )\n");
-        displaySeats(&temp1);
+        displaySeats(&temp3);
+        displayBill(&temp3, &temp, quantity);
     }
     else
     {
