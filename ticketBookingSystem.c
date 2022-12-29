@@ -2,6 +2,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#define RED_BG "\033[48;5;9m"
+#define YLW_BG "\033[48;5;11m"
+#define GRN_BG "\033[48;5;34m"
+#define WHITE_TXT "\033[38;5;15m"
+#define BLACK_TXT "\033[38;5;0m"
+#define RESET "\033[0m"
 struct Movie
 {
     char name[30];
@@ -20,10 +26,8 @@ struct Screen
     int screenNum;
     int showID;
     struct Movie *movie;
-    int seats[100];
-    int day;
-    int month;
-    int year;
+    int seats[15];
+    char date[20];
     char time[20];
     int seatsCount;
     struct Screen *next;
@@ -43,18 +47,14 @@ void showMovies(struct Movie **head)
 
 void setScreen(struct Screen **screenHead, int screenNum, int showId, struct Movie **movie)
 {
-    char date[30];
+    char date[20];
+    char hour[20];
     time_t t;
     t = time(NULL);
     struct tm tm = *localtime(&t);
     // printf("Current Date: %d-%d-%d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
     printf("\n====== IN SETSCREEN %d", showId);
-    snprintf(date, 30, "%d-%d-%d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
-    // strcat(date, 1);
-    // strcat(date, "-");
-    // strcat(date, (tm.tm_mon + 1));
-    // strcat(date, "-");
-    // strcat(date, (tm.tm_year + 1900));
+    snprintf(date, 20, "%d-%d-%d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
     printf("\nDATE: %s", date);
     struct Screen *newShow = (struct Screen *)malloc(sizeof(struct Screen));
     newShow->screenNum = screenNum;
@@ -63,6 +63,8 @@ void setScreen(struct Screen **screenHead, int screenNum, int showId, struct Mov
     newShow->next = NULL;
     if (showId == 1)
     {
+        // sprintf(date, 20, "%s %s", date, "9:00 AM");
+        snprintf(hour, 20, "9:00 AM");
         printf("\nHOURS: 9:00 AM");
     }
     else
@@ -72,15 +74,17 @@ void setScreen(struct Screen **screenHead, int screenNum, int showId, struct Mov
         int minu = minutes % 60;
         if ((hours - 12) < 0)
         {
-            printf("\nHOURS: %d:%d AM", hours, minu);
+            snprintf(hour, 20, "%d:%s%d AM", hours, minu > 10 ? "" : "0", minu);
+            printf("\nHOURS: %d:%s%d AM", hours, minu > 10 ? "" : "0", minu);
         }
         else if ((hours - 12) == 0)
         {
-            printf("\nHOURS: %d:%d PM", hours, minu);
+            snprintf(hour, 20, "%d:%s%d PM", hours, minu > 10 ? "" : "0", minu);
+            printf("\nHOURS: %d:%s%d PM", hours, minu > 10 ? "" : "0", minu);
         }
         else
         {
-            printf("\nHOURS: %d:%d PM", (hours - 12), minu);
+            printf("\nHOURS: %d:%s%d PM", (hours - 12), minu > 10 ? "" : "0", minu);
         }
     }
     struct Screen *temp;
@@ -134,8 +138,21 @@ void displayShows(struct Screen **sHead1, struct Screen **sHead2, struct Screen 
     }
 }
 
-void extraFunction5()
+int areShowsEmpty(struct Screen **head)
 {
+    int empty = 1;
+    struct Screen *temp;
+    temp = *head;
+    while (temp != NULL)
+    {
+        if (temp->seatsCount > 0)
+        {
+            empty = 0;
+            break;
+        }
+        temp = temp->next;
+    }
+    return empty;
 }
 
 void extraFunction6()
@@ -298,6 +315,7 @@ void setMovie(struct Movie **head, struct Screen **sHead1, struct Screen **sHead
 void removeMovie(struct Movie **head)
 {
     char movieName[20];
+    int removeFlag = 0;
     printf("\nEnter name of the movie to be removed: ");
     scanf(" ");
     fgets(movieName, 20, stdin);
@@ -317,29 +335,59 @@ void removeMovie(struct Movie **head)
             {
                 if (temp->screen1 == 1)
                 {
-                    screen1 = NULL;
+                    if (areShowsEmpty(&screen1) == 0)
+                    {
+                        removeFlag = 1;
+                        printf("\n%s%sCannot remove movie from Screen I, some of the shows for the movie in Screen I are already booked for the day%s", RED_BG, WHITE_TXT, RESET);
+                    }
+                    else
+                    {
+                        printf("\n%s%s Movie Removed from Screen I %s", GRN_BG, WHITE_TXT, RESET);
+                        screen1 = NULL;
+                    }
                 }
                 if (temp->screen2 == 1)
                 {
-                    screen2 = NULL;
+                    if (areShowsEmpty(&screen2) == 0)
+                    {
+                        removeFlag = 1;
+                        printf("\nCannot remove movie from Screen II, some of the shows for the movie in Screen II are already booked for the day");
+                    }
+                    else
+                    {
+                        printf("\n%s%s Movie Removed from Screen II %s", GRN_BG, WHITE_TXT, RESET);
+                        screen2 = NULL;
+                    }
                 }
                 if (temp->screen3 == 1)
                 {
-                    screen3 = NULL;
+                    if (areShowsEmpty(&screen3) == 0)
+                    {
+                        removeFlag = 1;
+                        printf("\nCannot remove movie from Screen III, some of the shows for the movie in Screen III are already booked for the day");
+                    }
+                    else
+                    {
+                        printf("\n%s%s Movie Removed from Screen III %s", GRN_BG, WHITE_TXT, RESET);
+                        screen3 = NULL;
+                    }
                 }
-                if (previous == NULL && temp->next == NULL)
+                if (removeFlag == 0)
                 {
-                    movieHead = NULL;
+                    if (previous == NULL && temp->next == NULL)
+                    {
+                        movieHead = NULL;
+                    }
+                    else if (previous == NULL)
+                    {
+                        *head = temp->next;
+                    }
+                    else
+                    {
+                        previous->next = temp->next;
+                    }
+                    free(temp);
                 }
-                else if (previous == NULL)
-                {
-                    *head = temp->next;
-                }
-                else
-                {
-                    previous->next = temp->next;
-                }
-                free(temp);
                 break;
             }
             previous = temp;
