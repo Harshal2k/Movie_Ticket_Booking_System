@@ -9,6 +9,9 @@ struct Movie
     int screen1;
     int screen2;
     int screen3;
+     int price1;
+    int price2;
+    int price3;
     struct Movie *next;
 } *movieHead = NULL;
 
@@ -222,6 +225,9 @@ void setMovie(struct Movie **head, struct Screen **sHead1, struct Screen **sHead
     newMovie->screen1 = 0;
     newMovie->screen2 = 0;
     newMovie->screen3 = 0;
+    newMovie->price1=500;
+    newMovie->price2=350;
+    newMovie->price3=250;
     newMovie->next = NULL;
     strcpy(newMovie->name, movieName);
     newMovie->durationMin = duration;
