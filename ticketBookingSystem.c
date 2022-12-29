@@ -5,6 +5,9 @@
 #define RED_BG "\033[48;5;9m"
 #define YLW_BG "\033[48;5;11m"
 #define GRN_BG "\033[48;5;34m"
+#define BLK_BG "\033[48;5;0m"
+#define BLU_BG "\033[48;5;32m"
+#define WHT_BG "\033[48;5;15m"
 #define WHITE_TXT "\033[38;5;15m"
 #define BLACK_TXT "\033[38;5;0m"
 #define RESET "\033[0m"
@@ -33,6 +36,11 @@ struct Screen
     struct Screen *next;
 } *screen1 = NULL, *screen2 = NULL, *screen3 = NULL;
 
+void clear()
+{
+    system("clear");
+}
+
 void showMovies(struct Movie **head)
 {
     printf("\n-------MOVIES LIST---------------");
@@ -47,22 +55,19 @@ void showMovies(struct Movie **head)
 
 void setScreen(struct Screen **screenHead, int screenNum, int showId, struct Movie **movie)
 {
-    printf("\nSHOWID = %d", showId);
-    char date[20];
-    char hour[20];
     time_t t;
     t = time(NULL);
     struct tm tm = *localtime(&t);
-    snprintf(date, 20, "%d-%d-%d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
     struct Screen *newShow = (struct Screen *)malloc(sizeof(struct Screen));
     newShow->screenNum = screenNum;
     newShow->showID = showId;
     newShow->movie = *movie;
     newShow->seatsCount = 0;
     newShow->next = NULL;
+    snprintf(newShow->date, 20, "%d-%d-%d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
     if (showId == 1)
     {
-        snprintf(hour, 20, "9:00 AM");
+        snprintf(newShow->time, 20, "9:00 AM");
     }
     else
     {
@@ -71,15 +76,15 @@ void setScreen(struct Screen **screenHead, int screenNum, int showId, struct Mov
         int minu = minutes % 60;
         if ((hours - 12) < 0)
         {
-            snprintf(hour, 20, "%d:%s%d AM", hours, minu > 10 ? "" : "0", minu);
+            snprintf(newShow->time, 20, "%d:%s%d AM", hours, minu > 10 ? "" : "0", minu);
         }
         else if ((hours - 12) == 0)
         {
-            snprintf(hour, 20, "%d:%s%d PM", hours, minu > 10 ? "" : "0", minu);
+            snprintf(newShow->time, 20, "%d:%s%d PM", hours, minu > 10 ? "" : "0", minu);
         }
         else
         {
-            snprintf(hour, 20, "%d:%s%d PM", (hours - 12), minu > 10 ? "" : "0", minu);
+            snprintf(newShow->time, 20, "%d:%s%d PM", (hours - 12), minu > 10 ? "" : "0", minu);
         }
     }
     struct Screen *temp;
@@ -199,16 +204,15 @@ void deleteMovie(struct Movie **movie)
     }
 }
 
-
 void removeShow()
 {
     int screenNo, showId, flag = 0;
     struct Screen *temp, *prev = NULL;
     printf("\n%s%s ---------------------NOTE--------------------- %s", RED_BG, WHITE_TXT, RESET);
     printf("\n%s%s Show Once deleted cannot added be for that day %s\n", RED_BG, WHITE_TXT, RESET);
-    printf("\n%s%s Enter screen No: %s", YLW_BG, BLACK_TXT, RESET);
+    printf("\n%s%s Enter screen No: %s ", YLW_BG, BLACK_TXT, RESET);
     scanf("%d", &screenNo);
-    printf("\n%s%s Enter Show Id: %s", YLW_BG, BLACK_TXT, RESET);
+    printf("\n%s%s Enter Show Id: %s ", YLW_BG, BLACK_TXT, RESET);
     scanf("%d", &showId);
     if (screenNo == 1)
     {
@@ -343,31 +347,12 @@ void setMovie(struct Movie **head, struct Screen **sHead1, struct Screen **sHead
 {
     char movieName[30];
     int dd, mm, yy, duration, screens = 0, valid = 0, scre[3];
-    printf("\nEnter Movie Name: ");
+    printf("\n%s%s Enter Movie Name: %s ", YLW_BG, BLACK_TXT, RESET);
     scanf(" ");
     fgets(movieName, 30, stdin);
     movieName[strcspn(movieName, "\n")] = 0;
-    printf("\nEnter Movie Duration (in minutes): ");
+    printf("\n%s%s Enter Movie Duration (in minutes): %s ", YLW_BG, BLACK_TXT, RESET);
     scanf("%d", &duration);
-    // printf("\nEnter Release date (in format dd/mm/yyyy): ");
-    // scanf("%d/%d/%d", &dd, &mm, &yy);
-    // if (isDateValid(dd, mm, yy) == 0)
-    // {
-    //     return;
-    // }
-    // printf("\nEnter total screens (MAX 3): ");
-    // scanf("%d", &screens);
-    // if (screens > 3)
-    // {
-    //     printf("\nOnly 3 screens are avialable");
-    //     return;
-    // }
-    // else if (screens <= 0)
-    // {
-    //     printf("\nScreens cannot be less then or equal to Zero");
-    //     return;
-    // }
-
     struct Movie *newMovie = (struct Movie *)malloc(sizeof(struct Movie));
     newMovie->screen1 = 0;
     newMovie->screen2 = 0;
@@ -398,16 +383,14 @@ void setMovie(struct Movie **head, struct Screen **sHead1, struct Screen **sHead
             continue;
         }
         char option;
-        printf("\nDo you want to play this movie on Screen %s", romanNum);
-        printf("\nPress Y for yes OR any other character as NO: ");
+        printf("\n%s%s Do you want to play this movie on Screen %s ? %s ", GRN_BG, WHITE_TXT, romanNum, RESET);
+        printf("\n%s%s Press Y for YES or any other character as NO: %s ", YLW_BG, BLACK_TXT, RESET);
         scanf(" %c", &option);
         if (option == 'y' || option == 'Y')
         {
             int shows = (960 / (duration + 30));
-            printf("\nSHOWS: %d", shows);
             for (int j = 0; j < shows; j++)
             {
-                printf("\ni = %d", j);
                 if (i == 0)
                 {
                     setScreen(&screen1, 1, (j + 1), &newMovie);
@@ -424,6 +407,9 @@ void setMovie(struct Movie **head, struct Screen **sHead1, struct Screen **sHead
                     newMovie->screen3 = 1;
                 }
             }
+            printf("\n%s%s Movie Added on Screen %s %s\n", GRN_BG, WHITE_TXT, i == 0 ? "I" : i == 1 ? "II"
+                                                                                                    : "III",
+                   RESET);
         }
     }
     struct Movie *temp;
@@ -446,7 +432,7 @@ void removeMovie(struct Movie **head)
 {
     char movieName[20];
     int removeFlag = 0;
-    printf("\nEnter name of the movie to be removed: ");
+    printf("\n%s%s Enter name of the movie to be removed: %s ", YLW_BG, BLACK_TXT, RESET);
     scanf(" ");
     fgets(movieName, 20, stdin);
     movieName[strcspn(movieName, "\n")] = 0;
@@ -454,7 +440,7 @@ void removeMovie(struct Movie **head)
     temp = *head;
     if (temp == NULL)
     {
-        printf("\nNo Movies has been added for the day");
+        printf("\n%s%s No Movies has been added for the day %s\n", RED_BG, WHITE_TXT, RESET);
         return;
     }
     else
@@ -468,11 +454,11 @@ void removeMovie(struct Movie **head)
                     if (areShowsEmpty(&screen1) == 0)
                     {
                         removeFlag = 1;
-                        printf("\n%s%sCannot remove movie from Screen I, some of the shows for the movie in Screen I are already booked for the day%s", RED_BG, WHITE_TXT, RESET);
+                        printf("\n%s%s Cannot remove movie from Screen I, some of the shows for the movie in Screen I are already booked for the day %s\n", RED_BG, WHITE_TXT, RESET);
                     }
                     else
                     {
-                        printf("\n%s%s Movie Removed from Screen I %s", GRN_BG, WHITE_TXT, RESET);
+                        printf("\n%s%s Movie Removed from Screen I %s\n", GRN_BG, WHITE_TXT, RESET);
                         screen1 = NULL;
                     }
                 }
@@ -481,11 +467,11 @@ void removeMovie(struct Movie **head)
                     if (areShowsEmpty(&screen2) == 0)
                     {
                         removeFlag = 1;
-                        printf("\nCannot remove movie from Screen II, some of the shows for the movie in Screen II are already booked for the day");
+                        printf("\n%s%s Cannot remove movie from Screen II, some of the shows for the movie in Screen II are already booked for the day %s\n", RED_BG, WHITE_TXT, RESET);
                     }
                     else
                     {
-                        printf("\n%s%s Movie Removed from Screen II %s", GRN_BG, WHITE_TXT, RESET);
+                        printf("\n%s%s Movie Removed from Screen II %s\n", GRN_BG, WHITE_TXT, RESET);
                         screen2 = NULL;
                     }
                 }
@@ -494,11 +480,11 @@ void removeMovie(struct Movie **head)
                     if (areShowsEmpty(&screen3) == 0)
                     {
                         removeFlag = 1;
-                        printf("\nCannot remove movie from Screen III, some of the shows for the movie in Screen III are already booked for the day");
+                        printf("\n%s%s Cannot remove movie from Screen III, some of the shows for the movie in Screen III are already booked for the day %s\n", RED_BG, WHITE_TXT, RESET);
                     }
                     else
                     {
-                        printf("\n%s%s Movie Removed from Screen III %s", GRN_BG, WHITE_TXT, RESET);
+                        printf("\n%s%s Movie Removed from Screen III %s\n", GRN_BG, WHITE_TXT, RESET);
                         screen3 = NULL;
                     }
                 }
@@ -586,14 +572,10 @@ void bookTicket()
     char movieNam[20], name[20];
     int shid, quantity, seatno, scrno;
     int price1 = 0, total = 0, price2 = 0, price3 = 0;
-    printf("\nEnter name of the movie: ");
+    printf("\n%s%s Enter name of the movie: %s ", YLW_BG, BLACK_TXT, RESET);
     scanf(" ");
     fgets(movieNam, 20, stdin);
     movieNam[strcspn(movieNam, "\n")] = 0;
-    printf("\nEnter your name: ");
-    scanf(" ");
-    fgets(name, 20, stdin);
-    name[strcspn(name, "\n")] = 0;
     struct Movie *temp;
     temp = movieHead;
     int flagMovie = 0;
@@ -608,25 +590,29 @@ void bookTicket()
     }
     if (flagMovie == 0)
     {
-        printf("Enter valid movie name");
+        printf("\n%s%s Enter valid movie name %s\n", RED_BG, WHITE_TXT, RESET);
         bookTicket();
     }
+    printf("\n%s%s Enter your name: %s ", YLW_BG, BLACK_TXT, RESET);
+    scanf(" ");
+    fgets(name, 20, stdin);
+    name[strcspn(name, "\n")] = 0;
 ScreenNo:
-    printf("\nEnter Screen No :");
+    printf("\n%s%s Enter Screen No: %s ", YLW_BG, BLACK_TXT, RESET);
     scanf("%d", &scrno);
     if (scrno == 1 && screen1 == NULL)
     {
-        printf("\nNo shows available on screen\n");
+        printf("\n%s%s No shows available on screen I %s\n", RED_BG, WHITE_TXT, RESET);
         goto ScreenNo;
     }
     else if (scrno == 2 && screen2 == NULL)
     {
-        printf("\nNo shows available on screen\n");
+        printf("\n%s%s No shows available on screen II %s\n", RED_BG, WHITE_TXT, RESET);
         goto ScreenNo;
     }
     else if (scrno == 3 && screen3 == NULL)
     {
-        printf("\nNo shows available on screen\n");
+        printf("\n%s%s No shows available on screen III %s\n", RED_BG, WHITE_TXT, RESET);
         goto ScreenNo;
     }
 
@@ -634,7 +620,7 @@ ScreenNo:
     struct Screen *temp2 = screen2;
     struct Screen *temp3 = screen3;
 SHID:
-    printf("\nEnter  show ID :");
+    printf("\n%s%s Enter show Id: %s ", YLW_BG, BLACK_TXT, RESET);
     scanf("%d", &shid);
     if (scrno == 1 && temp->screen1 == 1)
     {
@@ -647,15 +633,13 @@ SHID:
 
                 if (shid == temp1->showID)
                 {
-                    printf("\nHow Many Tickets :");
+                    printf("\n%s%s How Many Tickets: %s ", YLW_BG, BLACK_TXT, RESET);
                     scanf("%d", &quantity);
-                    // displaySeats(&temp1);
-
                     for (int i = 0; i < quantity; i++)
                     {
                         while (1)
                         {
-                            printf("\nSelect seat No :");
+                            printf("\n%s%s Select seat No: %s ", YLW_BG, BLACK_TXT, RESET);
                             scanf("%d", &seatno);
                             if (seatno <= 30)
                             {
@@ -672,7 +656,7 @@ SHID:
                             seatno = seatno - 1;
                             if (temp1->seats[seatno] == 1)
                             {
-                                printf("Seat Already Booked Please Select another seat\n");
+                                printf("\n%s%s Seat Already Booked Please Select another seat %s\n", RED_BG, WHITE_TXT, RESET);
                             }
                             else
                             {
@@ -693,7 +677,7 @@ SHID:
             temp1 = temp1->next;
         }
         printf("\n\n");
-        printf("\nYou have booked seats that are starred ( * )\n");
+        printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
         displaySeats(&temp1);
 
         total = price1 + price2 + price3;
@@ -724,7 +708,7 @@ SHID:
                 if (shid == temp2->showID)
                 {
 
-                    printf("How Many Tickets :");
+                    printf("\n%s%s How Many Tickets: %s ", YLW_BG, BLACK_TXT, RESET);
                     scanf("%d", &quantity);
                     displaySeats(&temp1);
                     for (int i = 0; i < quantity; i++)
@@ -732,7 +716,7 @@ SHID:
 
                         while (1)
                         {
-                            printf("\nSelect seat No :");
+                            printf("\n%s%s Select seat No: %s ", YLW_BG, BLACK_TXT, RESET);
                             scanf("%d", &seatno);
                             if (seatno <= 30)
                             {
@@ -749,7 +733,7 @@ SHID:
                             seatno = seatno - 1;
                             if (temp2->seats[seatno] == 1)
                             {
-                                printf("Seat Already Booked Please Seclect another seat\n");
+                                printf("\n%s%s Seat Already Booked Please Select another seat %s\n", RED_BG, WHITE_TXT, RESET);
                             }
                             else
                             {
@@ -770,7 +754,7 @@ SHID:
 
             temp2 = temp2->next;
         }
-        printf("\nYou have booked seats that are starred ( * )\n");
+        printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
         displaySeats(&temp1);
         total = price1 + price2 + price3;
         if (price1 != 0)
@@ -800,7 +784,7 @@ SHID:
                 if (shid == temp3->showID)
                 {
 
-                    printf("How Many Tickets :");
+                    printf("\n%s%s How Many Tickets: %s ", YLW_BG, BLACK_TXT, RESET);
                     scanf("%d", &quantity);
                     displaySeats(&temp1);
                     for (int i = 0; i < quantity; i++)
@@ -808,7 +792,7 @@ SHID:
 
                         while (1)
                         {
-                            printf("\nSelect seat No :");
+                            printf("\n%s%s Select seat No: %s ", YLW_BG, BLACK_TXT, RESET);
                             scanf("%d", &seatno);
                             if (seatno <= 30)
                             {
@@ -825,7 +809,7 @@ SHID:
                             seatno = seatno - 1;
                             if (temp3->seats[seatno] == 1)
                             {
-                                printf("Seat Already Booked Please Seclect another seat\n");
+                                printf("\n%s%s Seat Already Booked Please Select another seat %s\n", RED_BG, WHITE_TXT, RESET);
                             }
                             else
                             {
@@ -846,7 +830,7 @@ SHID:
 
             temp3 = temp3->next;
         }
-        printf("\nYou have booked seats that are starred ( * )\n");
+        printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
         displaySeats(&temp3);
         total = price1 + price2 + price3;
         if (price1 != 0)
@@ -868,7 +852,7 @@ SHID:
 
     else
     {
-        printf("\nEnter valid Screen Number: ");
+        printf("\n%s%s Invalid Screen Number %s", RED_BG, WHITE_TXT, RESET);
         goto ScreenNo;
     }
 }
@@ -883,53 +867,62 @@ void admin()
     char movieName[30];
     int dd, mm, yy;
     struct Movie *temp = movieHead;
-    printf("\nEnter Admin Password:");
+    printf("\n%s%s Enter Admin Password: %s ", YLW_BG, BLACK_TXT, RESET);
     scanf(" ");
     fgets(password, 20, stdin);
     if (0 != strcmp(password, "pass\n"))
     {
-        printf("\nInvalid Password");
+        printf("\n%s%s Invalid Password %s\n", RED_BG, WHITE_TXT, RESET);
         return;
     }
     int option;
     while (1)
     {
-        printf("\n****WELCOME ADMIN****");
-        printf("\n1. Add Movie");
-        printf("\n2. Remove Movie");
-        printf("\n3. Remove Show");
-        printf("\n4. Display Movies");
-        printf("\n5. Display Shows");
-        printf("\n6. Exit");
-        printf("\nEnter your option: ");
+        printf("\n%s%s   WELCOME TO ADMIN SECTION   ", BLK_BG, WHITE_TXT, RESET);
+        printf("\n%s%s 1. Add Movie                 %s", WHT_BG, BLACK_TXT, RESET);
+        printf("\n%s%s 2. Remove Movie              %s", BLU_BG, WHITE_TXT, RESET);
+        printf("\n%s%s 3. Remove Show               %s", WHT_BG, BLACK_TXT, RESET);
+        printf("\n%s%s 4. Display Movies            %s", BLU_BG, WHITE_TXT, RESET);
+        printf("\n%s%s 5. Display Shows             %s", WHT_BG, BLACK_TXT, RESET);
+        printf("\n%s%s 6. Exit                      %s", BLU_BG, WHITE_TXT, RESET);
+        printf("\n%s%s                              %s", BLK_BG, BLACK_TXT, RESET);
+        printf("\n\n%s%sEnter your option: %s ", YLW_BG, BLACK_TXT, RESET);
         scanf("%d", &option);
         switch (option)
         {
         case 1:
+            clear();
             if (screen1 == NULL || screen2 == NULL || screen3 == NULL)
             {
                 setMovie(&movieHead, &screen1, &screen2, &screen3);
             }
             else
             {
-                printf("\nNo Screens Available");
+                printf("\n%s%s No Screens Available %s\n", RED_BG, WHITE_TXT, RESET);
             }
             break;
         case 2:
+            clear();
             removeMovie(&movieHead);
             break;
         case 3:
+            clear();
             removeShow();
             break;
         case 4:
+            clear();
             showMovies(&movieHead);
             break;
         case 5:
+            clear();
             displayShows(&screen1, &screen2, &screen3);
             break;
         case 6:
+            clear();
             return;
         default:
+            clear();
+            printf("\n%s%s Invalid Option %s\n", RED_BG, WHITE_TXT, RESET);
             break;
         }
     }
@@ -940,28 +933,35 @@ void user()
     int choice;
     while (1)
     {
-        printf("\n *** Welcome to user section *** \n");
-        printf("1. Shows Available Shows\n");
-        printf("2. Book Seat\n");
-        printf("3. Cancel Seat\n");
-        printf("4. Go to previous Menu\n");
+        printf("\n%s%s   WELCOME TO USER SECTION   %s\n", BLK_BG, WHITE_TXT, RESET);
+        printf("%s%s 1. Shows Available Shows    %s\n", WHT_BG, BLACK_TXT, RESET);
+        printf("%s%s 2. Book Seat                %s\n", BLU_BG, WHITE_TXT, RESET);
+        printf("%s%s 3. Cancel Seat              %s\n", WHT_BG, BLACK_TXT, RESET);
+        printf("%s%s 4. Go to previous Menu      %s\n", BLU_BG, WHITE_TXT, RESET);
+        printf("%s%s                             %s\n", BLK_BG, WHITE_TXT, RESET);
+        printf("\n%s%sEnter your option: %s ", YLW_BG, BLACK_TXT, RESET);
         scanf("%d", &choice);
         switch (choice)
         {
         case 1:
+            clear();
             displayShows(&screen1, &screen2, &screen3);
             break;
         case 2:
+            clear();
             bookTicket();
             break;
         case 3:
+            clear();
             cancelTicket();
             break;
         case 4:
+            clear();
             main();
             break;
         default:
-            printf("\nInvalid Option :(");
+            clear();
+            printf("\n%s%s Invalid Option %s\n", RED_BG, WHITE_TXT, RESET);
             break;
         }
     }
@@ -970,28 +970,31 @@ void user()
 int main()
 {
     int option;
-    printf("\nMOVIE TICKET BOOKING SYSTEM");
     while (1)
     {
-        printf("\n1. Admin");
-        printf("\n2. User");
-        printf("\n3. Exit");
-        printf("\nEnter your option: ");
+        printf("\n%s%s   MOVIE TICKET BOOKING SYSTEM   %s", BLK_BG, WHITE_TXT, RESET);
+        printf("\n%s%s  1. Admin                       %s", BLU_BG, WHITE_TXT, RESET);
+        printf("\n%s%s  2. User                        %s", WHT_BG, BLACK_TXT, RESET);
+        printf("\n%s%s  3. Exit                        %s", BLU_BG, WHITE_TXT, RESET);
+        printf("\n%s%s                                 %s", BLK_BG, WHITE_TXT, RESET);
+        printf("\n\n%s%sEnter your option: %s ", YLW_BG, BLACK_TXT, RESET);
         scanf("%d", &option);
         switch (option)
         {
         case 1:
+            clear();
             admin();
             break;
         case 2:
-            printf("\n In User");
+            clear();
             user();
             break;
         case 3:
             exit(0);
             break;
         default:
-            printf("\nInvalid Option :(");
+            clear();
+            printf("\n%s%s Invalid Option %s\n", RED_BG, WHITE_TXT, RESET);
             break;
         }
     }
