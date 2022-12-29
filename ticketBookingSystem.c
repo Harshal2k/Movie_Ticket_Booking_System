@@ -151,6 +151,55 @@ int areShowsEmpty(struct Screen **head)
     return empty;
 }
 
+void deleteMovie(struct Movie **movie)
+{
+    struct Movie *temp;
+    temp = *movie;
+    int todelete = 0;
+    if (temp->screen1 == 1 && screen1 != NULL)
+    {
+        todelete = 1;
+    }
+    if (temp->screen2 == 1 && screen2 != NULL)
+    {
+        todelete = 1;
+    }
+    if (temp->screen3 == 1 && screen3 != NULL)
+    {
+        todelete = 1;
+    }
+    if (todelete == 0)
+    {
+        struct Movie *temp2 = movieHead, *prev = NULL;
+        while (temp2 != NULL)
+        {
+            if (strcmp(temp2->name, temp->name) == 0)
+            {
+                break;
+            }
+            prev = temp2;
+            temp2 = temp2->next;
+        }
+        if (temp2 != NULL)
+        {
+            if (prev == NULL && temp2->next == NULL)
+            {
+                movieHead = NULL;
+            }
+            else if (prev == NULL)
+            {
+                movieHead = temp2->next;
+            }
+            else
+            {
+                prev->next = temp2->next;
+            }
+            free(temp2);
+        }
+    }
+}
+
+
 void removeShow()
 {
     int screenNo, showId, flag = 0;
@@ -240,54 +289,6 @@ void removeShow()
             }
             free(temp);
             printf("\n%s%s Show Deleted Successfully %s\n", GRN_BG, WHITE_TXT, RESET);
-        }
-    }
-}
-
-void deleteMovie(struct Movie **movie)
-{
-    struct Movie *temp;
-    temp = *movie;
-    int todelete = 0;
-    if (temp->screen1 == 1 && screen1 != NULL)
-    {
-        todelete = 1;
-    }
-    if (temp->screen2 == 1 && screen2 != NULL)
-    {
-        todelete = 1;
-    }
-    if (temp->screen3 == 1 && screen3 != NULL)
-    {
-        todelete = 1;
-    }
-    if (todelete == 0)
-    {
-        struct Movie *temp2 = movieHead, *prev = NULL;
-        while (temp2 != NULL)
-        {
-            if (strcmp(temp2->name, temp->name) == 0)
-            {
-                break;
-            }
-            prev = temp2;
-            temp2 = temp2->next;
-        }
-        if (temp2 != NULL)
-        {
-            if (prev == NULL && temp2->next == NULL)
-            {
-                movieHead = NULL;
-            }
-            else if (prev == NULL)
-            {
-                movieHead = temp2->next;
-            }
-            else
-            {
-                prev->next = temp2->next;
-            }
-            free(temp2);
         }
     }
 }
