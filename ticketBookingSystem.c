@@ -695,7 +695,7 @@ SHID:
         printf("\nYou have booked seats that are starred ( * )\n");
         displaySeats(&temp1);
 
-        total=price1+price2+price3;
+        total = price1 + price2 + price3;
         if (price1 != 0)
         {
             displayBill(&temp1, &temp, quantity, name, temp->price1);
@@ -708,7 +708,7 @@ SHID:
         {
             displayBill(&temp1, &temp, quantity, name, temp->price3);
         }
-         printf("\t                      Total      : %d  \n\n", total);
+        printf("\t                      Total      : %d  \n\n", total);
         printf("\t============================================================\n");
     }
 
@@ -733,6 +733,18 @@ SHID:
                         {
                             printf("\nSelect seat No :");
                             scanf("%d", &seatno);
+                            if (seatno <= 30)
+                            {
+                                price3 = temp->price3 + price3;
+                            }
+                            else if (seatno >= 80)
+                            {
+                                price1 = temp->price1 + price1;
+                            }
+                            else if (seatno > 30 && seatno < 80)
+                            {
+                                price2 = temp->price2 + price2;
+                            }
                             seatno = seatno - 1;
                             if (temp2->seats[seatno] == 1)
                             {
@@ -759,6 +771,21 @@ SHID:
         }
         printf("\nYou have booked seats that are starred ( * )\n");
         displaySeats(&temp1);
+        total = price1 + price2 + price3;
+        if (price1 != 0)
+        {
+            displayBill(&temp2, &temp, quantity, name, temp->price1);
+        }
+        else if (price2 != 0)
+        {
+            displayBill(&temp2, &temp, quantity, name, temp->price2);
+        }
+        else if (price3 != 0)
+        {
+            displayBill(&temp2, &temp, quantity, name, temp->price3);
+        }
+        printf("\t                      Total      : %d  \n\n", total);
+        printf("\t============================================================\n");
         // displayBill(&temp2, &temp, quantity, name);
     }
     else if (scrno == 3 && temp->screen3 == 1)
@@ -782,6 +809,18 @@ SHID:
                         {
                             printf("\nSelect seat No :");
                             scanf("%d", &seatno);
+                            if (seatno <= 30)
+                            {
+                                price3 = temp->price3 + price3;
+                            }
+                            else if (seatno >= 80)
+                            {
+                                price1 = temp->price1 + price1;
+                            }
+                            else if (seatno > 30 && seatno < 80)
+                            {
+                                price2 = temp->price2 + price2;
+                            }
                             seatno = seatno - 1;
                             if (temp3->seats[seatno] == 1)
                             {
@@ -808,6 +847,21 @@ SHID:
         }
         printf("\nYou have booked seats that are starred ( * )\n");
         displaySeats(&temp3);
+        total = price1 + price2 + price3;
+        if (price1 != 0)
+        {
+            displayBill(&temp3, &temp, quantity, name, temp->price1);
+        }
+        else if (price2 != 0)
+        {
+            displayBill(&temp3, &temp, quantity, name, temp->price2);
+        }
+        else if (price3 != 0)
+        {
+            displayBill(&temp3, &temp, quantity, name, temp->price3);
+        }
+        printf("\t                      Total      : %d  \n\n", total);
+        printf("\t============================================================\n");
         // displayBill(&temp3, &temp, quantity, name);
     }
 
@@ -820,14 +874,6 @@ SHID:
 
 void cancelTicket()
 {
-    struct Screen *p = screen1;
-    int i = 0;
-    while (p != NULL)
-    {
-        printf("%d ", p->seats[i]);
-        p = p->next;
-        i++;
-    }
 }
 
 void admin()
