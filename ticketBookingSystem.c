@@ -344,6 +344,7 @@ void removeMovie(struct Movie **head)
 
 void displaySeats()
 {
+    
 }
 
 void displayMovies()
@@ -364,6 +365,7 @@ void bookTicket()
     
     char movieNam[20];
     int shid, quantity, seatno, scrno;
+    displayMovies(&screen1,&screen2,&screen3);
     printf("\nWhich Movie you want to see?\n");
     scanf("%s",movieNam);
     struct Movie *temp;
@@ -395,16 +397,19 @@ void bookTicket()
     }
 
     
-    printf("\nEnter  show ID :");
-    scanf("%d", &shid);
-
+    
+   
+    
     struct Screen *temp1 = screen1;
     struct Screen *temp2 = screen2;
     struct Screen *temp3 = screen3;
+    SHID:
+    printf("\nEnter  show ID :");
+    scanf("%d", &shid);   
     if (scrno == 1 && temp->screen1==1)
     {
         int flag=0;
-        SHID:
+       
         while (temp1 != NULL)
         {
             while (1)
