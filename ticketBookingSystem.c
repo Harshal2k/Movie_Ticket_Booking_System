@@ -519,16 +519,16 @@ void displaySeats(struct Screen **shead)
     int no;
     for (int i = 0; i < 100; i++)
     {
-        if (i % 10== 0)
+        if (i % 10 == 0)
             printf("\n\n");
-       
+
         if (vacant->seats[i] == 1)
         {
             printf("*\t");
         }
         else
         {
-            printf("%d\t", i+1);
+            printf("%d\t", i + 1);
         }
     }
 }
@@ -573,6 +573,8 @@ void bookTicket()
 
     char movieNam[20], name[20];
     int shid, quantity, seatno, scrno;
+    int arr[100];
+    int count = 0;
     int price1 = 0, total = 0, price2 = 0, price3 = 0;
     printf("\n%s%s Enter name of the movie: %s ", YLW_BG, BLACK_TXT, RESET);
     scanf(" ");
@@ -643,18 +645,6 @@ SHID:
                         {
                             printf("\n%s%s Select seat No: %s ", YLW_BG, BLACK_TXT, RESET);
                             scanf("%d", &seatno);
-                            if (seatno <= 30)
-                            {
-                                price3 = temp->price3 + price3;
-                            }
-                            else if (seatno >= 80)
-                            {
-                                price1 = temp->price1 + price1;
-                            }
-                            else if (seatno > 30 && seatno < 80)
-                            {
-                                price2 = temp->price2 + price2;
-                            }
                             seatno = seatno - 1;
                             if (temp1->seats[seatno] == 1)
                             {
@@ -663,6 +653,8 @@ SHID:
                             else
                             {
                                 temp1->seats[seatno] = 1;
+                                arr[count] = seatno;
+                                count++;
                                 break;
                             }
                         }
@@ -678,35 +670,54 @@ SHID:
 
             temp1 = temp1->next;
         }
-        if (flag==0)
+        if (flag == 0)
         {
             printf("\n\nEnter Valid ShowID:\n\n");
-            temp1=screen1;
+            temp1 = screen1;
             goto SHID;
         }
         printf("\n\n");
         printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
         displaySeats(&temp1);
 
+        // if (price1 != 0)
+        // {
+        //     displayBill(&temp1, &temp, quantity, name, temp->price1);
+        // }
+        // else if (price2 != 0)
+        // {
+        //     displayBill(&temp1, &temp, quantity, name, temp->price2);
+        // }
+        // else if (price3 != 0)
+        // {
+        //     displayBill(&temp1, &temp, quantity, name, temp->price3);
+        // }
+        for (int i = 0; i < count; i++)
+        {
+            if (seatno <= 30)
+            {
+                price3 = temp->price3 + price3;
+                displayBill(&temp1, &temp, quantity, name, temp->price3);
+            }
+            else if (seatno >= 80)
+            {
+                price1 = temp->price1 + price1;
+                displayBill(&temp1, &temp, quantity, name, temp->price1);
+            }
+            else if (seatno > 30 && seatno < 80)
+            {
+                price2 = temp->price2 + price2;
+                displayBill(&temp1, &temp, quantity, name, temp->price2);
+            }
+        }
+
         total = price1 + price2 + price3;
-        if (price1 != 0)
-        {
-            displayBill(&temp1, &temp, quantity, name, temp->price1);
-        }
-        else if (price2 != 0)
-        {
-            displayBill(&temp1, &temp, quantity, name, temp->price2);
-        }
-        else if (price3 != 0)
-        {
-            displayBill(&temp1, &temp, quantity, name, temp->price3);
-        }
         printf("\t                      Total      : %d  \n\n", total);
         printf("\t============================================================\n");
-        price1=0;
-        price2=0;
-        price3=0;
-        temp1=screen1;
+        price1 = 0;
+        price2 = 0;
+        price3 = 0;
+        temp1 = screen1;
     }
 
     else if (scrno == 2 && temp->screen2 == 1)
@@ -766,13 +777,13 @@ SHID:
 
             temp2 = temp2->next;
         }
-        if (flag==0)
+        if (flag == 0)
         {
             printf("\n\nEnter Valid ShowID:\n\n");
-            temp2=screen2;
+            temp2 = screen2;
             goto SHID;
         }
-        
+
         printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
         displaySeats(&temp1);
         total = price1 + price2 + price3;
@@ -790,7 +801,6 @@ SHID:
         }
         printf("\t                      Total      : %d  \n\n", total);
         printf("\t============================================================\n");
-        
     }
     else if (scrno == 3 && temp->screen3 == 1)
     {
@@ -849,10 +859,10 @@ SHID:
 
             temp3 = temp3->next;
         }
-        if (flag==0)
+        if (flag == 0)
         {
             printf("\n\nEnter Valid ShowID:\n\n");
-            temp3=screen3;
+            temp3 = screen3;
             goto SHID;
         }
         printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
@@ -884,16 +894,16 @@ SHID:
 
 void cancelTicket()
 {
-    
-    struct Movie *temp=movieHead;
+
+    struct Movie *temp = movieHead;
     struct Screen *temp1;
     struct Screen *temp2;
     struct Screen *temp3;
-    int scrno,shid,seatno,quantity;
+    int scrno, shid, seatno, quantity;
     printf("\n** Welcome to cancellation window **\n");
-    ScreenNo:
+ScreenNo:
     printf("\nEnter screen number :");
-    scanf("%d",&scrno);
+    scanf("%d", &scrno);
     if (scrno == 1 && screen1 == NULL)
     {
         printf("\nNo shows available on screen\n");
@@ -909,26 +919,26 @@ void cancelTicket()
         printf("\nNo shows available on screen\n");
         goto ScreenNo;
     }
-    else if(scrno>3)
+    else if (scrno > 3)
     {
         printf("\n\nInvalid Screen No.\n\n");
         goto ScreenNo;
     }
-    if (scrno==1)
+    if (scrno == 1)
     {
-       temp1=screen1;
+        temp1 = screen1;
     }
-    if (scrno==2)
+    if (scrno == 2)
     {
-        temp2=screen2;
+        temp2 = screen2;
     }
-    if (scrno==3)
+    if (scrno == 3)
     {
-        temp3=screen3;
+        temp3 = screen3;
     }
-    SH:
+SH:
     printf("\nEnter showID: ");
-    scanf("%d",&shid);
+    scanf("%d", &shid);
     // printf("\nEnter seat no. : ");
     // scanf("%d",&seatno);
     if (scrno == 1 && temp->screen1 == 1)
@@ -944,19 +954,18 @@ void cancelTicket()
                 {
                     printf("\nHow Many Tickets You Want To Cancel :");
                     scanf("%d", &quantity);
-                    
 
                     for (int i = 0; i < quantity; i++)
                     {
                         while (1)
                         {
-                            seat:
+                        seat:
                             printf("\nSelect seat No :");
                             scanf("%d", &seatno);
                             seatno = seatno - 1;
                             if (temp1->seats[seatno] == 1)
                             {
-                                temp1->seats[seatno]=0;
+                                temp1->seats[seatno] = 0;
                                 break;
                             }
                             else
@@ -977,13 +986,13 @@ void cancelTicket()
 
             temp1 = temp1->next;
         }
-        if (flag==0)
+        if (flag == 0)
         {
             printf("\n\nEnter valid showID\n");
-            temp1=screen1;
+            temp1 = screen1;
             goto SH;
         }
-        
+
         printf("\n\n");
         printf("\n\nSEAT DELETED\n\n");
         displaySeats(&temp1);
@@ -1001,7 +1010,6 @@ void cancelTicket()
                 {
                     printf("\nHow Many Tickets You Want To Cancel :");
                     scanf("%d", &quantity);
-                    
 
                     for (int i = 0; i < quantity; i++)
                     {
@@ -1012,7 +1020,7 @@ void cancelTicket()
                             seatno = seatno - 1;
                             if (temp2->seats[seatno] == 1)
                             {
-                                temp2->seats[seatno]=0;
+                                temp2->seats[seatno] = 0;
                                 break;
                             }
                             else
@@ -1032,16 +1040,16 @@ void cancelTicket()
 
             temp2 = temp2->next;
         }
-         if (flag==0)
+        if (flag == 0)
         {
             printf("\n\nEnter valid showID\n");
-            temp2=screen2;
+            temp2 = screen2;
             goto SH;
         }
         printf("\n\n");
         printf("\n\nSEAT DELETED\n\n");
         displaySeats(&temp1);
-    }  
+    }
     else if (scrno == 3 && temp->screen3 == 1)
     {
         int flag = 0;
@@ -1055,7 +1063,6 @@ void cancelTicket()
                 {
                     printf("\nHow Many Tickets You Want To Cancel :");
                     scanf("%d", &quantity);
-                    
 
                     for (int i = 0; i < quantity; i++)
                     {
@@ -1066,7 +1073,7 @@ void cancelTicket()
                             seatno = seatno - 1;
                             if (temp3->seats[seatno] == 1)
                             {
-                                temp3->seats[seatno]=0;
+                                temp3->seats[seatno] = 0;
                                 break;
                             }
                             else
@@ -1086,10 +1093,10 @@ void cancelTicket()
 
             temp3 = temp3->next;
         }
-         if (flag==0)
+        if (flag == 0)
         {
             printf("\n\nEnter valid showID\n");
-            temp3=screen3;
+            temp3 = screen3;
             goto SH;
         }
         printf("\n\n");
