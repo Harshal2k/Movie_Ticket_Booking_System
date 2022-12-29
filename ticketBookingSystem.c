@@ -349,7 +349,7 @@ void displaySeats(struct Screen **shead)
     for (int i = 0; i < 100; i++)
     {
         if(i%10==0)
-				printf("\n");
+				printf("\n\n");
         if (vacant->seats[i] == 1)
         {
             printf("*\t", vacant->seats[i]);
