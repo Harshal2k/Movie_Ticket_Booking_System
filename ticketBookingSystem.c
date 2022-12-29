@@ -533,29 +533,20 @@ void displaySeats(struct Screen **shead)
     }
 }
 
-void displayBill(struct Screen **shead, struct Movie **mhead, int quantity, char name[], int price)
+void displayBill(struct Screen **shead, int seatNo, char name[], int price)
 {
     struct Screen *temp = *shead;
-    struct Movie *mov = *mhead;
-    int no;
-    for (int i = 0; i < 100; i++)
-    {
-        if (temp->seats[i] == 1)
-        {
-            no = i + 1;
-            printf("\n\n");
-            printf("\t-----------------        VASCO 1920        ----------------\n");
-            printf("\t============================================================\n");
-            printf("\t Booking ID : %d \t\t\tShow Name : %s\n", temp->showID, mov->name);
-            printf("\t Customer  : %s \n", name);
-            printf("\t\t\t                              Date      : %s\n", temp->date);
-            printf("\t                                              Time       : %s\n", temp->time);
-            printf("\t                                              Screen No. : %d\n", temp->screenNum);
-            printf("\t                                              seats No.  : %d  \n", no);
-            printf("\t                                              price      : %d  \n\n", price);
-            printf("\t============================================================\n");
-        }
-    }
+    printf("\n\n");
+    printf("\t-----------------        VASCO 1920        ----------------\n");
+    printf("\t============================================================\n");
+    printf("\t Booking ID : %d \t\t\tShow Name : %s\n", temp->showID, temp->movie->name);
+    printf("\t Customer  : %s \n", name);
+    printf("\t\t\t                              Date      : %s\n", temp->date);
+    printf("\t                                              Time       : %s\n", temp->time);
+    printf("\t                                              Screen No. : %d\n", temp->screenNum);
+    printf("\t                                              seats No.  : %d  \n", seatNo);
+    printf("\t                                              price      : %d  \n\n", price);
+    printf("\t============================================================\n");
 
     return;
 }
@@ -680,34 +671,23 @@ SHID:
         printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
         displaySeats(&temp1);
 
-        // if (price1 != 0)
-        // {
-        //     displayBill(&temp1, &temp, quantity, name, temp->price1);
-        // }
-        // else if (price2 != 0)
-        // {
-        //     displayBill(&temp1, &temp, quantity, name, temp->price2);
-        // }
-        // else if (price3 != 0)
-        // {
-        //     displayBill(&temp1, &temp, quantity, name, temp->price3);
-        // }
         for (int i = 0; i < count; i++)
         {
-            if (seatno <= 30)
+            int tempCount = arr[i] + 1;
+            if (tempCount <= 30)
             {
                 price3 = temp->price3 + price3;
-                displayBill(&temp1, &temp, quantity, name, temp->price3);
+                displayBill(&temp1, tempCount, name, temp->price3);
             }
-            else if (seatno >= 80)
+            else if (tempCount >= 80)
             {
                 price1 = temp->price1 + price1;
-                displayBill(&temp1, &temp, quantity, name, temp->price1);
+                displayBill(&temp1, tempCount, name, temp->price1);
             }
-            else if (seatno > 30 && seatno < 80)
+            else if (tempCount > 30 && tempCount < 80)
             {
                 price2 = temp->price2 + price2;
-                displayBill(&temp1, &temp, quantity, name, temp->price2);
+                displayBill(&temp1, tempCount, name, temp->price2);
             }
         }
 
@@ -741,18 +721,6 @@ SHID:
                         {
                             printf("\n%s%s Select seat No: %s ", YLW_BG, BLACK_TXT, RESET);
                             scanf("%d", &seatno);
-                            if (seatno <= 30)
-                            {
-                                price3 = temp->price3 + price3;
-                            }
-                            else if (seatno >= 80)
-                            {
-                                price1 = temp->price1 + price1;
-                            }
-                            else if (seatno > 30 && seatno < 80)
-                            {
-                                price2 = temp->price2 + price2;
-                            }
                             seatno = seatno - 1;
                             if (temp2->seats[seatno] == 1)
                             {
@@ -785,19 +753,26 @@ SHID:
         }
 
         printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
-        displaySeats(&temp1);
+        displaySeats(&temp2);
         total = price1 + price2 + price3;
-        if (price1 != 0)
+        for (int i = 0; i < count; i++)
         {
-            displayBill(&temp2, &temp, quantity, name, temp->price1);
-        }
-        else if (price2 != 0)
-        {
-            displayBill(&temp2, &temp, quantity, name, temp->price2);
-        }
-        else if (price3 != 0)
-        {
-            displayBill(&temp2, &temp, quantity, name, temp->price3);
+            int tempCount = arr[i] + 1;
+            if (tempCount <= 30)
+            {
+                price3 = temp->price3 + price3;
+                displayBill(&temp2, tempCount, name, temp->price3);
+            }
+            else if (tempCount >= 80)
+            {
+                price1 = temp->price1 + price1;
+                displayBill(&temp2, tempCount, name, temp->price1);
+            }
+            else if (tempCount > 30 && tempCount < 80)
+            {
+                price2 = temp->price2 + price2;
+                displayBill(&temp2, tempCount, name, temp->price2);
+            }
         }
         printf("\t                      Total      : %d  \n\n", total);
         printf("\t============================================================\n");
@@ -823,18 +798,6 @@ SHID:
                         {
                             printf("\n%s%s Select seat No: %s ", YLW_BG, BLACK_TXT, RESET);
                             scanf("%d", &seatno);
-                            if (seatno <= 30)
-                            {
-                                price3 = temp->price3 + price3;
-                            }
-                            else if (seatno >= 80)
-                            {
-                                price1 = temp->price1 + price1;
-                            }
-                            else if (seatno > 30 && seatno < 80)
-                            {
-                                price2 = temp->price2 + price2;
-                            }
                             seatno = seatno - 1;
                             if (temp3->seats[seatno] == 1)
                             {
@@ -868,17 +831,24 @@ SHID:
         printf("\n%s%s You have booked seats that are starred ( * ) %s\n", GRN_BG, WHITE_TXT, RESET);
         displaySeats(&temp3);
         total = price1 + price2 + price3;
-        if (price1 != 0)
+        for (int i = 0; i < count; i++)
         {
-            displayBill(&temp3, &temp, quantity, name, temp->price1);
-        }
-        else if (price2 != 0)
-        {
-            displayBill(&temp3, &temp, quantity, name, temp->price2);
-        }
-        else if (price3 != 0)
-        {
-            displayBill(&temp3, &temp, quantity, name, temp->price3);
+            int tempCount = arr[i] + 1;
+            if (tempCount <= 30)
+            {
+                price3 = temp->price3 + price3;
+                displayBill(&temp3, tempCount, name, temp->price3);
+            }
+            else if (tempCount >= 80)
+            {
+                price1 = temp->price1 + price1;
+                displayBill(&temp3, tempCount, name, temp->price1);
+            }
+            else if (tempCount > 30 && tempCount < 80)
+            {
+                price2 = temp->price2 + price2;
+                displayBill(&temp3, tempCount, name, temp->price2);
+            }
         }
         printf("\t                      Total      : %d  \n\n", total);
         printf("\t============================================================\n");
