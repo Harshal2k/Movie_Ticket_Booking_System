@@ -433,15 +433,11 @@ void bookTicket()
 ScreenNo:
     printf("\nEnter Screen No :");
     scanf("%d", &scrno);
-    if (!(scrno == 1 && screen1->screenNum == 1) ||
+    if ((scrno == 1 && screen1->screenNum == 1) ||
         (scrno == 2 && screen2->screenNum == 1) ||
         (scrno == 3 && screen3->screenNum == 1))
     {
-        printf("\nEnter valid Screen Number: ");
-        goto ScreenNo;
-    }
-
-    struct Screen *temp1 = screen1;
+         struct Screen *temp1 = screen1;
     struct Screen *temp2 = screen2;
     struct Screen *temp3 = screen3;
 SHID:
@@ -610,11 +606,16 @@ SHID:
         displaySeats(&temp3);
         displayBill(&temp3, &temp, quantity);
     }
+        
+    }
     else
     {
-        printf("\nEnter Valid Screen NO :\n");
-        scanf("%d", &scrno);
+        printf("\nEnter valid Screen Number: ");
+        goto ScreenNo;
     }
+
+   
+    
 }
 
 void cancelTicket()
