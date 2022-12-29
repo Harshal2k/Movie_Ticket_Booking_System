@@ -315,6 +315,8 @@ void removeMovie(struct Movie **head)
 
 void displaySeats()
 {
+   
+    
 }
 
 void displayMovies()
@@ -332,120 +334,201 @@ void bookedShows()
 void bookTicket()
 {
 
-//    struct Screen *temp=screen1;
-     //screen1 = (struct Screen *)malloc(sizeof(struct Screen));
-//     struct Movie *mov=(struct Movie *)malloc(sizeof(struct Movie));
-//     int seatNo;
-//     char movieName[50];
-//     char userName[50];
-//     char mobileNo[10];
-//     displayMovies();
-//     printf("\nWhich show would you like to watch\n");
-//     scanf(" ");
-//     fgets(mov->name,50,stdin);
-//     printf("\nEnter your name\n");
-//     scanf(" ");
-//     fgets(userName,50,stdin);
-//      printf("\nEnter your screen number\n");
-//     scanf("%d",&sc->screenNum);
+    //    struct Screen *temp=screen1;
+    // screen1 = (struct Screen *)malloc(sizeof(struct Screen));
+    //     struct Movie *mov=(struct Movie *)malloc(sizeof(struct Movie));
+    //     int seatNo;
+    //     char movieName[50];
+    //     char userName[50];
+    //     char mobileNo[10];
+    //     displayMovies();
+    //     printf("\nWhich show would you like to watch\n");
+    //     scanf(" ");
+    //     fgets(mov->name,50,stdin);
+    //     printf("\nEnter your name\n");
+    //     scanf(" ");
+    //     fgets(userName,50,stdin);
+    //      printf("\nEnter your screen number\n");
+    //     scanf("%d",&sc->screenNum);
 
-//     while (1)
-//     {
-//         printf("\nEnter your 10 digit mobile number\n");
-//         scanf(" ");
-//         fgets(mobileNo,10,stdin);
+    //     while (1)
+    //     {
+    //         printf("\nEnter your 10 digit mobile number\n");
+    //         scanf(" ");
+    //         fgets(mobileNo,10,stdin);
 
-//         int len = strlen(mobileNo);
+    //         int len = strlen(mobileNo);
 
-//         if (len == 2)
-//         {
+    //         if (len == 2)
+    //         {
 
-//             break;
-//         }
-//         else
-//         {
-//             printf("Invalid Mobile number\n");
-//         }
-//     }
+    //             break;
+    //         }
+    //         else
+    //         {
+    //             printf("Invalid Mobile number\n");
+    //         }
+    //     }
 
-//     displaySeats();
-//     while (1)
-//     {
-//         printf("\nEnter Seat No. : ");
-//         scanf("%d", &seatNo);
-        
-        
-//         if (sc->seats[seatNo] != 0)
-//         {
-//             printf("Seat Already Booked... Please select another seat :)");
-//         }
-//         else
-//         {
-//             sc->seats[seatNo] = 1;
-//             break;
-            
-//         }
-//     }
+    //     displaySeats();
+    //     while (1)
+    //     {
+    //         printf("\nEnter Seat No. : ");
+    //         scanf("%d", &seatNo);
 
-//     for (int i = 0; i < 15; i++)
-//     {
-//         printf("%d ",sc->seats[i]);
-//     }
-char movieNam[20];
-int scrno,quantity,seatno;
+    //         if (sc->seats[seatNo] != 0)
+    //         {
+    //             printf("Seat Already Booked... Please select another seat :)");
+    //         }
+    //         else
+    //         {
+    //             sc->seats[seatNo] = 1;
+    //             break;
+
+    //         }
+    //     }
+
+    //     for (int i = 0; i < 15; i++)
+    //     {
+    //         printf("%d ",sc->seats[i]);
+    //     }
+    char movieNam[20];
+    int shid, quantity, seatno, scrno;
     printf("\nWhich Movie you want to see?\n");
-    scanf("%s",movieNam);
-    printf("\nScreen No :");
-    scanf("%d",&scrno);
-    printf("How Many Tickets :");
-    scanf("%d",&quantity);
-    printf("Select Seact Numbers :");
-    for (int i = 0; i < quantity; i++)
+    scanf("%s", movieNam);
+    printf("\nEnter Screen No :");
+    scanf("%d", &scrno);
+    printf("\nEnter  show ID :");
+    scanf("%d", &shid);
+    struct Screen *temp1 = screen1;
+    struct Screen *temp2 = screen2;
+    struct Screen *temp3 = screen3;
+if (scrno==1)
+{
+    while (temp1 != NULL )
     {
-        //displaySeats();
-       while (1)
-       {
-        printf("\nSelect seat No :");
-       scanf("%d",&seatno);
-        if (screen1->seats[seatno]==1)
+        while (1)
         {
-           printf("Seat Already Booked Please Seclect another seat\n");
+
+            if (shid == temp1->showID)
+            {
+                
+                printf("How Many Tickets :");
+                scanf("%d", &quantity);
+                printf("Select Seact Numbers :");
+                for (int i = 0; i < quantity; i++)
+                {
+                    // displaySeats();
+                    while (1)
+                    {
+                        printf("\nSelect seat No :");
+                        scanf("%d", &seatno);
+                        seatno = seatno - 1;
+                        if (screen1->seats[seatno] == 1)
+                        {
+                            printf("Seat Already Booked Please Seclect another seat\n");
+                        }
+                        else
+                        {
+                            screen1->seats[seatno] = 1;
+                            break;
+                        }
+                    }
+                }
+                
+            }
           
-        }
-        else{
-            screen1->seats[seatno]=1;
             break;
         }
-        
-       }
-       
+        printf("\n-----------------------------------");
+           
+            printf("\nShowId: %d", temp1->showID);
+        temp1 = temp1->next;
+            printf("\n-----------------------------------");
     }
     
     printf("\nYou have booked\n");
     for (int i = 0; i < 15; i++)
     {
-        if (screen1->seats[i]==1)
+        if (screen1->seats[i] == 1)
         {
-            printf("%d ",screen1->seats[i]);
+            printf("%d ", screen1->seats[i]);
         }
         else
         {
             printf("0 ");
         }
-        
     }
-    
+}
+if (scrno==2)
+{
+    while (temp2 != NULL )
+    {
+        while (1)
+        {
+
+            if (shid == temp2->showID)
+            {
+                
+                printf("How Many Tickets :");
+                scanf("%d", &quantity);
+                printf("Select Seact Numbers :");
+                for (int i = 0; i < quantity; i++)
+                {
+                    // displaySeats();
+                    while (1)
+                    {
+                        printf("\nSelect seat No :");
+                        scanf("%d", &seatno);
+                        seatno = seatno - 1;
+                        if (screen2->seats[seatno] == 1)
+                        {
+                            printf("Seat Already Booked Please Seclect another seat\n");
+                        }
+                        else
+                        {
+                            screen2->seats[seatno] = 1;
+                            break;
+                        }
+                    }
+                }
+                
+            }
+          
+            break;
+        }
+        printf("\n-----------------------------------");
+           
+            printf("\nShowId: %d", temp2->showID);
+        temp2 = temp2->next;
+            printf("\n-----------------------------------");
+    }
+    printf("\nYou have booked\n");
+    for (int i = 0; i < 15; i++)
+    {
+        if (screen2->seats[i] == 1)
+        {
+            printf("%d ", screen2->seats[i]);
+        }
+        else
+        {
+            printf("0 ");
+        }
+    }
+}
+
+   
     
 }
 
 void cancelTicket()
 {
-    struct Screen *p=screen1;
-    int i=0;
-    while (p!=NULL)
+    struct Screen *p = screen1;
+    int i = 0;
+    while (p != NULL)
     {
-        printf("%d ",p->seats[i]);
-        p=p->next;
+        printf("%d ", p->seats[i]);
+        p = p->next;
         i++;
     }
 }
@@ -518,14 +601,14 @@ void user()
         printf("2. Book Seat\n");
         printf("3. Cancel Seat\n");
         printf("4. Go to previous Menu\n");
-        scanf("%d",&choice);
+        scanf("%d", &choice);
         switch (choice)
         {
         case 1:
             displayMovies();
             break;
         case 2:
-           bookTicket();
+            bookTicket();
             break;
         case 3:
             cancelTicket();
