@@ -919,18 +919,18 @@ ScreenNo:
     scanf("%d", &scrno);
     if (scrno == 1 && screen1 == NULL)
     {
-        printf("\n%s%s No shows available on screen %s\n", RED_BG, WHITE_TXT, RESET);
-        goto ScreenNo;
+        printf("\n%s%s No shows available on screen I %s\n", RED_BG, WHITE_TXT, RESET);
+        return;
     }
     else if (scrno == 2 && screen2 == NULL)
     {
-        printf("\n%s%s No shows available on screen %s\n", RED_BG, WHITE_TXT, RESET);
-        goto ScreenNo;
+        printf("\n%s%s No shows available on screen II %s\n", RED_BG, WHITE_TXT, RESET);
+        return;
     }
     else if (scrno == 3 && screen3 == NULL)
     {
-        printf("\n%s%s No shows available on screen %s\n", RED_BG, WHITE_TXT, RESET);
-        goto ScreenNo;
+        printf("\n%s%s No shows available on screen III %s\n", RED_BG, WHITE_TXT, RESET);
+        return;
     }
     else if (scrno > 3)
     {
@@ -1171,6 +1171,58 @@ SH:
     }
 }
 
+/*FUNCTION TO DISPLAY AVAILABILITY OF SEATS [DISPLAYS SEATS]*/
+void showAvailability()
+{
+    int scrno, shid, flag = 0;
+ScreenNo:
+    printf("\n%s%s Enter screen number: %s ", YLW_BG, BLACK_TXT, RESET);
+    scanf("%d", &scrno);
+    if (scrno == 1 && screen1 == NULL)
+    {
+        printf("\n%s%s No shows available on screen I %s\n", RED_BG, WHITE_TXT, RESET);
+        return;
+    }
+    else if (scrno == 2 && screen2 == NULL)
+    {
+        printf("\n%s%s No shows available on screen II %s\n", RED_BG, WHITE_TXT, RESET);
+        return;
+    }
+    else if (scrno == 3 && screen3 == NULL)
+    {
+        printf("\n%s%s No shows available on screen  III %s\n", RED_BG, WHITE_TXT, RESET);
+        return;
+    }
+    else if (scrno > 3)
+    {
+        printf("\n\n%s%s Invalid Screen No. %s\n\n", RED_BG, WHITE_TXT, RESET);
+        goto ScreenNo;
+    }
+    struct Screen *tempScr = scrno == 1 ? screen1 : scrno == 2 ? screen2
+                                                               : screen3;
+    printf("\n%s%s Enter Show Id: %s ", YLW_BG, BLACK_TXT, RESET);
+    scanf("%d", &shid);
+    while (tempScr != NULL)
+    {
+        if (tempScr->showID == shid)
+        {
+            flag = 1;
+            break;
+        }
+        tempScr = tempScr->next;
+    }
+
+    if (flag == 0)
+    {
+        printf("\n%s%s Invalid Show Id %s\n", RED_BG, WHITE_TXT, RESET);
+        return;
+    }
+    else
+    {
+        displaySeats(&tempScr);
+    }
+}
+
 /*FUNCTION TO INITIALIZE MENU DRIVEN ADMIN SECTION*/
 void admin()
 {
@@ -1246,10 +1298,11 @@ void user()
     while (1)
     {
         printf("\n%s%s   WELCOME TO USER SECTION   %s\n", BLK_BG, WHITE_TXT, RESET);
-        printf("%s%s 1. Shows Available Shows    %s\n", WHT_BG, BLACK_TXT, RESET);
+        printf("%s%s 1. Show Available Shows     %s\n", WHT_BG, BLACK_TXT, RESET);
         printf("%s%s 2. Book Seat                %s\n", BLU_BG, WHITE_TXT, RESET);
         printf("%s%s 3. Cancel Seat              %s\n", WHT_BG, BLACK_TXT, RESET);
-        printf("%s%s 4. Go to previous Menu      %s\n", BLU_BG, WHITE_TXT, RESET);
+        printf("%s%s 4. Check Seats Availability %s\n", BLU_BG, WHITE_TXT, RESET);
+        printf("%s%s 5. Exit                     %s\n", WHT_BG, BLACK_TXT, RESET);
         printf("%s%s                             %s\n", BLK_BG, WHITE_TXT, RESET);
         printf("\n%s%sEnter your option: %s ", YLW_BG, BLACK_TXT, RESET);
         scanf("%d", &choice);
@@ -1268,6 +1321,10 @@ void user()
             cancelTicket();
             break;
         case 4:
+            clear();
+            showAvailability();
+            break;
+        case 5:
             clear();
             main();
             break;
