@@ -1326,7 +1326,7 @@ void user()
             break;
         case 5:
             clear();
-            main();
+            return;
             break;
         default:
             clear();
