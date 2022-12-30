@@ -1,5 +1,5 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 /*FUNCTION TO PRINT LIST OF AVAILABLE MOVIES*/
 void displayMovieList(struct Movie **head)
 {
@@ -374,7 +374,7 @@ void addMovie(struct Movie **head, struct Screen **sHead1, struct Screen **sHead
 void removeMovie(struct Movie **head)
 {
     char movieName[20];
-    int removeFlag = 0;
+    int removeFlag = 0, movieExists = 0;
     printf("\n%s%s Enter name of the movie to be removed: %s ", YLW_BG, BLACK_TXT, RESET);
     scanf(" ");
     fgets(movieName, 20, stdin);
@@ -392,6 +392,7 @@ void removeMovie(struct Movie **head)
         {
             if (strcmp(movieName, temp->name) == 0)
             {
+                movieExists = 1;
                 if (temp->screen1 == 1)
                 {
                     if (areShowsEmpty(&screen1) == 0)
@@ -451,6 +452,11 @@ void removeMovie(struct Movie **head)
             }
             previous = temp;
             temp = temp->next;
+        }
+
+        if (movieExists == 0)
+        {
+            printf("\n%s%s Movie %s has not been added %s\n", RED_BG, WHITE_TXT, movieName, RESET);
         }
     }
 }
