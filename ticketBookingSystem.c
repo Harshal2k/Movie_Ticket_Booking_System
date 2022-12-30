@@ -43,14 +43,17 @@ void clear()
 
 void showMovies(struct Movie **head)
 {
-    printf("\n-------MOVIES LIST---------------");
+    printf("\n%s%s            MOVIES LIST           %s", BLK_BG, WHITE_TXT, RESET);
     struct Movie *temp;
     temp = *head;
+    int count = 1;
     while (temp != NULL)
     {
-        printf("\nMovie = %s", temp->name);
+        printf("\n%s%s %d. %-30s%s", count % 2 == 0 ? BLU_BG : WHT_BG, count % 2 == 0 ? WHITE_TXT : BLACK_TXT, count, temp->name, RESET);
         temp = temp->next;
+        count++;
     }
+    printf("\n%s%s                                  %s\n\n", BLK_BG, WHITE_TXT, RESET);
 }
 
 void setScreen(struct Screen **screenHead, int screenNum, int showId, struct Movie **movie)
@@ -105,37 +108,37 @@ void setScreen(struct Screen **screenHead, int screenNum, int showId, struct Mov
 
 void displayShows(struct Screen **sHead1, struct Screen **sHead2, struct Screen **sHead3)
 {
-    printf("\n-------SHOW LIST 1---------------");
     struct Screen *temp;
     temp = *sHead1;
     for (int i = 0; i < 3; i++)
     {
+        int count = 1;
         if (i == 0)
         {
-            printf("\n-------SHOW LIST 1---------------");
+            printf("\n\n%s%s              SCREEN I SHOW              %s", BLK_BG, WHITE_TXT, RESET);
             temp = *sHead1;
         }
         else if (i == 1)
         {
-            printf("\n-------SHOW LIST 2---------------");
+            printf("\n\n%s%s              SCREEN II SHOW             %s", BLK_BG, WHITE_TXT, RESET);
             temp = *sHead2;
         }
         else
         {
-            printf("\n-------SHOW LIST 3---------------");
+            printf("\n\n%s%s             SCREEN III SHOW             %s", BLK_BG, WHITE_TXT, RESET);
             temp = *sHead3;
         }
         while (temp != NULL)
         {
-            printf("\n-----------------------------------");
-            printf("\nMovie: %s", temp->movie->name);
-            printf("\nDuration: %d", temp->movie->durationMin);
-            printf("\nScreenNum: %d", temp->screenNum);
-            printf("\nShowId: %d", temp->showID);
-            printf("\nSeatsCount: %d", temp->seatsCount);
-            printf("\n-----------------------------------");
+            printf("\n%s%s Movie:    %-30s%s", count % 2 == 0 ? BLU_BG : WHT_BG, count % 2 == 0 ? WHITE_TXT : BLACK_TXT, temp->movie->name, RESET);
+            printf("\n%s%s Duration: %-4d Minutes                  %s", count % 2 == 0 ? BLU_BG : WHT_BG, count % 2 == 0 ? WHITE_TXT : BLACK_TXT, temp->movie->durationMin, RESET);
+            printf("\n%s%s Screen:   %-30d%s", count % 2 == 0 ? BLU_BG : WHT_BG, count % 2 == 0 ? WHITE_TXT : BLACK_TXT, temp->screenNum, RESET);
+            printf("\n%s%s ShowId:   %-30d%s", count % 2 == 0 ? BLU_BG : WHT_BG, count % 2 == 0 ? WHITE_TXT : BLACK_TXT, temp->showID, RESET);
+            printf("\n%s%s Time:     %-15s%-15s%s", count % 2 == 0 ? BLU_BG : WHT_BG, count % 2 == 0 ? WHITE_TXT : BLACK_TXT, temp->date, temp->time, RESET);
             temp = temp->next;
+            count++;
         }
+        printf("\n%s%s                                         %s\n", BLK_BG, WHITE_TXT, RESET);
     }
 }
 
@@ -517,20 +520,32 @@ void displaySeats(struct Screen **shead)
     struct Screen *vacant;
     vacant = *shead;
     int no;
+    printf("\n                            %s%s         SCREEN         %s                            \n", BLK_BG, WHITE_TXT, RESET);
     for (int i = 0; i < 100; i++)
     {
         if (i % 10 == 0)
-            printf("\n\n");
-
+        {
+            printf("\n%s%s                                                                                %s\n", i <= 29 ? RED_BG : i > 79 ? GRN_BG
+                                                                                                                                           : BLU_BG,
+                   WHITE_TXT, RESET);
+        }
         if (vacant->seats[i] == 1)
         {
-            printf("*\t");
+            printf("%s%s    %-4s%s", i <= 29 ? RED_BG : i > 79 ? GRN_BG
+                                                                    : BLU_BG,
+                   WHITE_TXT,"*", RESET);
         }
         else
         {
-            printf("%d\t", i + 1);
+            printf("%s%s    %-4d%s", i <= 29 ? RED_BG : i > 79 ? GRN_BG
+                                                               : BLU_BG,
+                   WHITE_TXT, i + 1, RESET);
         }
     }
+    printf("\n%s%s                                                                                %s\n", GRN_BG, WHITE_TXT, RESET);
+    printf("\n %s  %s %s%s %d Rs %s", GRN_BG, RESET, BLK_BG, WHITE_TXT, vacant->movie->price1, RESET);
+    printf("\t %s  %s %s%s %d Rs %s", BLU_BG, RESET, BLK_BG, WHITE_TXT, vacant->movie->price2, RESET);
+    printf("\t %s  %s %s%s %d Rs %s\n", RED_BG, RESET, BLK_BG, WHITE_TXT, vacant->movie->price3, RESET);
 }
 
 void displayBill(struct Screen **shead, int seatNo, char name[], int price)
@@ -632,6 +647,7 @@ SHID:
                     scanf("%d", &quantity);
                     for (int i = 0; i < quantity; i++)
                     {
+                        displaySeats(&temp1);
                         while (1)
                         {
                             printf("\n%s%s Select seat No: %s ", YLW_BG, BLACK_TXT, RESET);
