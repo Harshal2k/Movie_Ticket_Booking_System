@@ -20,7 +20,7 @@ void admin()
     fgets(password, 20, stdin);
     if (0 != strcmp(password, "pass\n"))
     {
-        printf("\n%s%s Invalid Password %s\n", RED_BG, WHITE_TXT, RESET);
+        printf("\n%s%s Invalid Password %s\n\n", RED_BG, WHITE_TXT, RESET);
         return;
     }
     int option;
