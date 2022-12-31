@@ -456,7 +456,7 @@ ScreenNo:
 SH:
     printf("\n%s%s Enter showId: %s ", YLW_BG, BLACK_TXT, RESET);
     scanf("%d", &shid);
-    if (scrno == 1 && temp->screen1 == 1)
+    if (scrno == 1)
     {
         int flag = 0;
 
@@ -467,13 +467,18 @@ SH:
 
                 if (shid == temp1->showID)
                 {
+                    if (temp1->seatsCount == 0)
+                    {
+                        printf("\n%s%s No seats has been booked yet! %s\n", RED_BG, WHITE_TXT, RESET);
+                        return;
+                    }
                     printf("\n%s%s How Many Tickets You Want To Cancel: %s ", YLW_BG, BLACK_TXT, RESET);
                     scanf("%d", &quantity);
 
                     if (quantity > temp1->seatsCount)
                     {
                         printf("\n%s%s Only %d seats have been booked for the show %s\n", RED_BG, WHITE_TXT, temp1->seatsCount, RESET);
-                        continue;
+                        return;
                     }
                     else if (quantity < 1)
                     {
@@ -528,7 +533,7 @@ SH:
         printf("\n\n%s%s SEAT DELETED %s\n\n", GRN_BG, WHITE_TXT, RESET);
         displaySeats(&temp1);
     }
-    else if (scrno == 2 && temp->screen2 == 1)
+    else if (scrno == 2)
     {
         int flag = 0;
 
@@ -539,13 +544,18 @@ SH:
 
                 if (shid == temp2->showID)
                 {
+                    if (temp2->seatsCount == 0)
+                    {
+                        printf("\n%s%s No seats has been booked yet! %s\n", RED_BG, WHITE_TXT, RESET);
+                        return;
+                    }
                     printf("\n%s%s How Many Tickets You Want To Cancel: %s ", YLW_BG, BLACK_TXT, RESET);
                     scanf("%d", &quantity);
 
                     if (quantity > temp2->seatsCount)
                     {
                         printf("\n%s%s Only %d seats have been booked for the show %s\n", RED_BG, WHITE_TXT, temp2->seatsCount, RESET);
-                        continue;
+                        return;
                     }
                     else if (quantity < 1)
                     {
@@ -596,9 +606,9 @@ SH:
         }
 
         printf("\n\n%s%s SEAT DELETED %s\n\n", GRN_BG, WHITE_TXT, RESET);
-        displaySeats(&temp1);
+        displaySeats(&temp2);
     }
-    else if (scrno == 3 && temp->screen3 == 1)
+    else if (scrno == 3)
     {
         int flag = 0;
 
@@ -609,13 +619,18 @@ SH:
 
                 if (shid == temp3->showID)
                 {
+                    if (temp3->seatsCount == 0)
+                    {
+                        printf("\n%s%s No seats has been booked yet! %s\n", RED_BG, WHITE_TXT, RESET);
+                        return;
+                    }
                     printf("\n%s%s How Many Tickets You Want To Cancel: %s ", YLW_BG, BLACK_TXT, RESET);
                     scanf("%d", &quantity);
 
                     if (quantity > temp3->seatsCount)
                     {
                         printf("\n%s%s Only %d seats have been booked for the show %s\n", RED_BG, WHITE_TXT, temp3->seatsCount, RESET);
-                        continue;
+                        return;
                     }
                     else if (quantity < 1)
                     {
@@ -666,7 +681,7 @@ SH:
         }
 
         printf("\n\n%s%s SEAT DELETED %s\n\n", GRN_BG, WHITE_TXT, RESET);
-        displaySeats(&temp1);
+        displaySeats(&temp3);
     }
     else
     {
